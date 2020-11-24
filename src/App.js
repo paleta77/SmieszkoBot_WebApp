@@ -5,28 +5,26 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link,
-    Redirect,
-    useHistory,
-    useLocation
+
 } from "react-router-dom";
 import RootPage from "./pages/RootPage";
 import Dashboard from "./pages/Dashboard";
+import {ProvideAuth, PrivateRoute} from "./use-auth";
 
 function App() {
   return (
-      <div>
+      <ProvideAuth>
           <Router>
               <Switch>
                   <Route exact path="/">
                       <RootPage/>
                   </Route>
-                  <Route path="/dashboard">
+                  <PrivateRoute path="/dashboard">
                       <Dashboard/>
-                  </Route>
+                  </PrivateRoute>
               </Switch>
           </Router>
-      </div>
+      </ProvideAuth>
   );
 }
 
