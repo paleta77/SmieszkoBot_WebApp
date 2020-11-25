@@ -13,12 +13,14 @@ export function Dashboard(){
         });
     };
 
+    let userName = auth.user;
+
     return (
         <div>
             Witaj na swoim panelu
             <Link to="/">
                 <button onClick={logout}>
-                    Wyloguj
+                    Wyloguj {userName}
                 </button>
             </Link>
         </div>
