@@ -10,7 +10,7 @@ export function RootPage () {
     let { from } = location.state || { from: { pathname: "/" } };
     let login = () => {
         auth.signin(() => {
-            history.replace(from);
+            history.push("/dashboard");
         });
     };
 
