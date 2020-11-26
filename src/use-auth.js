@@ -17,6 +17,21 @@ const fakeAuth = {
     isAuthenticated: false,
     username: "",
     signin(cb) {
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Basic admin:1234");
+        //myHeaders.append("Access-Control-Allow-Origin", "localhost");
+
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+
+        fetch("http://localhost:8500/login?userID=469505275850915850&guildID=164834533001134080", requestOptions)
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.log('error', error));
+
         fakeAuth.isAuthenticated = true;
         fakeAuth.username = "paleta77";
         cb(); // fake async
