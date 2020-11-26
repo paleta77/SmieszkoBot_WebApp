@@ -1,6 +1,7 @@
 import React, { useState, useContext, createContext } from "react";
 import {Route, Redirect} from "react-router-dom";
 
+
 const authContext = createContext();
 
 export function ProvideAuth({ children }) {
@@ -14,13 +15,15 @@ export const useAuth = () => {
 
 const fakeAuth = {
     isAuthenticated: false,
+    username: "",
     signin(cb) {
         fakeAuth.isAuthenticated = true;
-        setTimeout(cb, 100); // fake async
+        fakeAuth.username = "paleta77";
+        cb(); // fake async
     },
     signout(cb) {
         fakeAuth.isAuthenticated = false;
-        setTimeout(cb, 100);
+        cb();
     }
 };
 
@@ -29,7 +32,7 @@ function useProvideAuth() {
 
     const signin = cb => {
         return fakeAuth.signin(() => {
-            setUser("user");
+            setUser(fakeAuth.username);
             cb();
         });
     };

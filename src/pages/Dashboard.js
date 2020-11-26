@@ -23,6 +23,11 @@ export function Dashboard(){
                     Wyloguj {userName}
                 </button>
             </Link>
+            <Link to="/">
+                <button>
+                    cofnij
+                </button>
+            </Link>
         </div>
     )
 }
