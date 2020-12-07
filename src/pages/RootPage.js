@@ -1,13 +1,11 @@
 import React from "react";
-import {Link, useHistory, useLocation} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {useAuth} from "../use-auth.js";
 
 export function RootPage () {
     let history = useHistory();
-    let location = useLocation();
     let auth = useAuth();
 
-    let { from } = location.state || { from: { pathname: "/" } };
     let login = () => {
         auth.signin(() => {
             history.push("/dashboard");
@@ -16,8 +14,8 @@ export function RootPage () {
 
     return (
         <div>
-            <textarea> </textarea>
-            <textarea> </textarea>
+            <textarea name="login" defaultValue="This is a description." />
+            <textarea name="password" defaultValue="This is a password."/>
             <Link to="/dashboard">
                 <button onClick={login}>Zaloguj</button>
             </Link>
