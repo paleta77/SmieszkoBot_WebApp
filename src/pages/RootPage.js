@@ -7,15 +7,13 @@ export function RootPage () {
     let auth = useAuth();
 
     let login = () => {
-        auth.signin(() => {
-            history.push("/dashboard");
-        });
+        auth.signin();
     };
 
     return (
         <div>
-            <textarea name="login" defaultValue="This is a description." />
-            <textarea name="password" defaultValue="This is a password."/>
+            <textarea id="login" defaultValue="This is a description." />
+            <textarea id="password" defaultValue="This is a password."/>
             <Link to="/dashboard">
                 <button onClick={login}>Zaloguj</button>
             </Link>

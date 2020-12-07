@@ -16,7 +16,7 @@ export const useAuth = () => {
 const fakeAuth = {
     isAuthenticated: false,
     username: "",
-    signin(cb) {
+    signin() {
         var myHeaders = new Headers();
         myHeaders.append("Authorization", "Basic admin:1234");
         //myHeaders.append("Access-Control-Allow-Origin", "localhost");
@@ -27,18 +27,22 @@ const fakeAuth = {
             redirect: 'follow'
         };
 
+
         fetch("http://localhost:8500/login?userID=469505275850915850&guildID=164834533001134080", requestOptions)
-            .then(response => response.text())
-            .then(result => console.log(result))
+            .then(response => response.json())
+            .then(function (result) {
+                console.log(result);
+                console.log(document.getElementById("login").value);
+                console.log(document.getElementById("password").value);
+            })
             .catch(error => console.log('error', error));
 
         fakeAuth.isAuthenticated = true;
         fakeAuth.username = "paleta77";
-        cb(); // fake async
+
     },
-    signout(cb) {
+    signout() {
         fakeAuth.isAuthenticated = false;
-        cb();
     }
 };
 
