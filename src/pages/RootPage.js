@@ -7,13 +7,23 @@ export function RootPage () {
     let auth = useAuth();
 
     let login = () => {
-        auth.signin();
+        auth.signin(() => {
+            history.push("/dashboard");
+        });
     };
+
+    let codeReq = () => {
+        auth.codeRequest(()=>{
+
+        })
+    }
 
     return (
         <div>
-            <textarea id="login" defaultValue="This is a description." />
-            <textarea id="password" defaultValue="This is a password."/>
+            <textarea id="username" defaultValue="admin" />
+            <textarea id="password" defaultValue="1234"/>
+            <textarea id="verificationCode" defaultValue="123456"/>
+            <button onClick={codeReq}>Wyślij kod</button>
             <Link to="/dashboard">
                 <button onClick={login}>Zaloguj</button>
             </Link>

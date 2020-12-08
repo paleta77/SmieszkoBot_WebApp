@@ -16,10 +16,24 @@ export const useAuth = () => {
 const fakeAuth = {
     isAuthenticated: false,
     username: "",
-    signin() {
+    verificationCode: 0,
+    signin(cb) {
+        fakeAuth.isAuthenticated = true;
+        //fakeAuth.username = "paleta77";
+        console.log(fakeAuth.verificationCode);
+        console.log(fakeAuth.username);
+        cb(); // fake async
+    },
+    signout(cb) {
+        fakeAuth.isAuthenticated = false;
+        cb();
+    },
+    codeRequest(cb) {
         var myHeaders = new Headers();
-        myHeaders.append("Authorization", "Basic admin:1234");
-        //myHeaders.append("Access-Control-Allow-Origin", "localhost");
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        const credentials = "Basic " + username + ":" + password;
+        myHeaders.append("Authorization", credentials);
 
         var requestOptions = {
             method: 'GET',
@@ -27,27 +41,27 @@ const fakeAuth = {
             redirect: 'follow'
         };
 
-
         fetch("http://localhost:8500/login?userID=469505275850915850&guildID=164834533001134080", requestOptions)
-            .then(response => response.json())
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error("HTTP status " + response.status);
+                }
+                return response.json();
+            })
             .then(function (result) {
                 console.log(result);
-                console.log(document.getElementById("login").value);
-                console.log(document.getElementById("password").value);
+                console.log(result.code);
+                fakeAuth.verificationCode = result.code;
+                fakeAuth.username = result.username;
             })
             .catch(error => console.log('error', error));
-
-        fakeAuth.isAuthenticated = true;
-        fakeAuth.username = "paleta77";
-
-    },
-    signout() {
-        fakeAuth.isAuthenticated = false;
+        cb();
     }
 };
 
 function useProvideAuth() {
     const [user, setUser] = useState(null);
+    const [code, setCode] = useState(null);
 
     const signin = cb => {
         return fakeAuth.signin(() => {
@@ -63,10 +77,18 @@ function useProvideAuth() {
         });
     };
 
+    const codeRequest = cb => {
+        return fakeAuth.codeRequest( () => {
+            setCode(fakeAuth.verificationCode);
+            cb();
+        });
+    };
+
     return {
         user,
         signin,
-        signout
+        signout,
+        codeRequest
     };
 }
 
