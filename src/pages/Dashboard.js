@@ -1,35 +1,14 @@
 import React from "react";
-import {Link, useHistory} from "react-router-dom";
-import {useAuth} from "../use-auth.js";
+import { withRouter } from "react-router-dom";
 
-export function Dashboard(){
-    const auth = useAuth();
-
-    let history = useHistory();
-
-    let logout = () => {
-        auth.signout(() => {
-            history.push("/");
-        });
-    };
-
-    let userName = auth.user;
+export function Dashboard({ logout, ...rest }){
 
     return (
         <div>
-            Witaj na swoim panelu
-            <Link to="/">
-                <button onClick={logout}>
-                    Wyloguj {userName}
-                </button>
-            </Link>
-            <Link to="/">
-                <button>
-                    cofnij
-                </button>
-            </Link>
+            <h1>Secret</h1>
+            <button onClick={logout}>Log out</button>
         </div>
     )
 }
 
-export default Dashboard;
+export default withRouter(Dashboard);
