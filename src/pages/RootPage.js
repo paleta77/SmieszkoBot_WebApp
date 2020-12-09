@@ -13,23 +13,27 @@ export function RootPage () {
     };
 
     let codeReq = () => {
-        auth.codeRequest(()=>{
+        auth.codeRequest(() => {
 
-        })
-    }
+        });
+    };
+
+
 
     return (
         <div>
-            <textarea id="username" defaultValue="admin" />
+            <textarea id="username" defaultValue="paleta77#3712" />
             <textarea id="password" defaultValue="1234"/>
             <textarea id="verificationCode" defaultValue="123456"/>
-            <button onClick={codeReq}>Wyślij kod</button>
             <Link to="/dashboard">
                 <button onClick={login}>Zaloguj</button>
             </Link>
             <Link to="/dashboard">
                 <button>przejdź dalej</button>
             </Link>
+            <button onClick={codeReq}>
+                generuj kod
+            </button>
         </div>
     )
 }

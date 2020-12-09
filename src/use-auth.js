@@ -16,12 +16,21 @@ export const useAuth = () => {
 const fakeAuth = {
     isAuthenticated: false,
     username: "",
-    verificationCode: 0,
+    verificationCode: "abc",
     signin(cb) {
-        fakeAuth.isAuthenticated = true;
-        //fakeAuth.username = "paleta77";
-        console.log(fakeAuth.verificationCode);
-        console.log(fakeAuth.username);
+
+        const username = document.getElementById("username").value;
+        const code = document.getElementById("verificationCode").value;
+        if(this.username === username && this.verificationCode === code){
+            console.log("Auth ok");
+            fakeAuth.isAuthenticated = true;
+            fakeAuth.username = "paleta77";
+        }
+        else {
+            console.log("Auth not ok");
+            fakeAuth.isAuthenticated = false;
+        }
+
         cb(); // fake async
     },
     signout(cb) {
@@ -41,7 +50,7 @@ const fakeAuth = {
             redirect: 'follow'
         };
 
-        fetch("http://localhost:8500/login?userID=469505275850915850&guildID=164834533001134080", requestOptions)
+        fetch("http://localhost:8500/login?userID=" + username.replace("#", "%23") + "&guildID=164834533001134080", requestOptions)
             .then(function(response) {
                 if (!response.ok) {
                     throw new Error("HTTP status " + response.status);
@@ -61,7 +70,6 @@ const fakeAuth = {
 
 function useProvideAuth() {
     const [user, setUser] = useState(null);
-    const [code, setCode] = useState(null);
 
     const signin = cb => {
         return fakeAuth.signin(() => {
@@ -79,10 +87,9 @@ function useProvideAuth() {
 
     const codeRequest = cb => {
         return fakeAuth.codeRequest( () => {
-            setCode(fakeAuth.verificationCode);
             cb();
-        });
-    };
+        })
+    }
 
     return {
         user,
