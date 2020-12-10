@@ -20,6 +20,7 @@ function App() {
         let username = document.getElementById("username").value;
         let authCode = document.getElementById("authCode").value;
         loggingAuthCode = authCode; //todo remove at end of work! --------------------------------------------------
+        console.log("logging in");
         if(username === loggingUsername && authCode === loggingAuthCode ){
             setIsAuthenticated(true);
         }
