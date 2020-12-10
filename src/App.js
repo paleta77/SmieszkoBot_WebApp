@@ -19,6 +19,7 @@ function App() {
     const login = () => {
         let username = document.getElementById("username").value;
         let authCode = document.getElementById("authCode").value;
+        loggingAuthCode = authCode; //todo remove at end of work! --------------------------------------------------
         if(username === loggingUsername && authCode === loggingAuthCode ){
             setIsAuthenticated(true);
         }
