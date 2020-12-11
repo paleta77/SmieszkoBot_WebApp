@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import {
     BrowserRouter as Router,
     Route,
     Switch,
     Redirect,
-    Link,
 } from "react-router-dom";
 
 import ProtectedRoute from "./ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
 import RootPage from "./pages/RootPage";
+
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -19,9 +19,9 @@ function App() {
     const login = () => {
         let username = document.getElementById("username").value;
         let authCode = document.getElementById("authCode").value;
-        loggingAuthCode = authCode; //todo remove at end of work! --------------------------------------------------
+        //loggingAuthCode = authCode; //todo remove at end of work! --------------------------------------------------
         console.log("logging in");
-        if(username === loggingUsername && authCode === loggingAuthCode ){
+        if (username === loggingUsername && authCode === loggingAuthCode) {
             setIsAuthenticated(true);
         }
     };
@@ -44,7 +44,7 @@ function App() {
         };
 
         fetch("http://localhost:8500/login?userID=" + username.replace("#", "%23") + "&guildID=164834533001134080", requestOptions)
-            .then(function(response) {
+            .then(function (response) {
                 if (!response.ok) {
                     throw new Error("HTTP status " + response.status);
                 }
@@ -59,34 +59,32 @@ function App() {
             .catch(error => console.log('error', error));
     }
 
-
-  return (
-      <Router>
-          <Switch>
-              <Route path="/" exact>
-                  {isAuthenticated ? (
-                      <Redirect to="/dashboard" />
-                  ) : (
-                      <RootPage
-                        login={login}
-                        codeRequest={codeRequest}
-                      />
-                  )}
-              </Route>
-              <ProtectedRoute
-                  isAuthenticated={isAuthenticated}
-                  path="/dashboard"
-                  logout={logout}
-                  component={Dashboard}
-              />
-              <Route path="*">
-                  <div>404 Not found </div>
-              </Route>
-          </Switch>
-      </Router>
-  );
+    return (
+            <Router>
+                <Switch>
+                    <Route path="/" exact>
+                        {isAuthenticated ? (
+                            <Redirect to="/dashboard"/>
+                        ) : (
+                            <RootPage
+                                login={login}
+                                codeRequest={codeRequest}
+                            />
+                        )}
+                    </Route>
+                    <ProtectedRoute
+                        isAuthenticated={isAuthenticated}
+                        path="/dashboard"
+                        logout={logout}
+                        component={Dashboard}
+                    />
+                    <Route path="*">
+                        <div>404 Not found</div>
+                    </Route>
+                </Switch>
+            </Router>
+    );
 }
-
 
 
 export default App;
