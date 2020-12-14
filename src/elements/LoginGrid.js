@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
         border: "1px",
         borderStyle: "solid",
         borderRadius: "15px",
+        padding: theme.spacing(1),
     },
     paper: {
         display: 'flex',

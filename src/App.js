@@ -19,11 +19,11 @@ function App() {
     const login = () => {
         let username = document.getElementById("username").value;
         let authCode = document.getElementById("authCode").value;
-        //loggingAuthCode = authCode; //todo remove at end of work! --------------------------------------------------
         console.log("logging in");
         if (username === loggingUsername && authCode === loggingAuthCode) {
             setIsAuthenticated(true);
         }
+        setIsAuthenticated(true)//todo remove at end of work! --------------------------------------------------
     };
 
     const logout = () => {
