@@ -3,63 +3,43 @@ import {List, ListItem} from "@material-ui/core";
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import MailIcon from '@material-ui/icons/Mail';
 import {makeStyles} from "@material-ui/styles";
+import {Link} from "react-router-dom";
 
-const useStyles = makeStyles((theme => ({
-    nested: {
-        paddingLeft: theme.spacing(3),
-    }
-})))
+const drawerWidth = 240;
 
-function getItems(){
+const useStyles = makeStyles((theme => ({})))
+
+function getItems() {
 
 }
 
-function ServerList() {
 
+function ServerList() {
     const [selectedIndex, setSelectedIndex] = React.useState(0);
     const [open, setOpen] = React.useState(false);
-
-    const classes = useStyles();
 
     const handleListItemClick = (event, index) => {
         setSelectedIndex(index);
     };
 
-    const handleClick = () => {
-        setOpen(!open);
-    };
-
-    return(
-        <List>
-            <ListItem
-                button
-                selected={selectedIndex===0}
-                onClick={(event) => handleListItemClick(event, 0)}
-                >
-                serwer1
-            </ListItem>
-            <ListItem
-                button
-                selected={selectedIndex===1}
-                onClick={(event) => handleClick(event, 1)}
-            >
-                serwer2
-                {open ? <ExpandLess /> : <ExpandMore />}
-            </ListItem>
-                <Collapse in={open}>
-                    <List disablePadding>
-                        <ListItem
-                            button
-                            className={classes.nested}
-                            selected={selectedIndex===2}
-                            onClick={(event => handleListItemClick(event, 2))}
-                            >
-                            serwer 3
-                        </ListItem>
-                    </List>
-                </Collapse>
+    return (
+        <List disablePadding>
+            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+                <ListItem  button key={text}
+                           selected={selectedIndex === index}
+                           onClick={(event) => handleListItemClick(event, index)}
+                component={Link} to={"/dashboard/server/" + text}>
+                    <ListItemIcon>{index % 2 === 0 ? <InboxIcon/> : <MailIcon/>}</ListItemIcon>
+                    <ListItemText primary={text}/>
+                </ListItem>
+            ))}
         </List>
+
     )
 }
 
