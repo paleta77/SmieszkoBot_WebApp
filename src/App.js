@@ -14,16 +14,45 @@ import RootPage from "./pages/RootPage";
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     let loggingAuthCode = "abc";
-    let loggingUsername = "qwe";
+    let jwt = "";
 
     const login = () => {
         let username = document.getElementById("username").value;
+        let password = document.getElementById("password").value;
         let authCode = document.getElementById("authCode").value;
+
+        const credentials = "Basic " + username + ":" + password;
+
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", credentials);
+        myHeaders.append("VerificationCode", authCode);
+
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+
+        fetch("http://localhost:8500/login?userID=" + username.replace("#", "%23"), requestOptions)
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error("HTTP status " + response.status);
+                }
+                return response.json();
+            })
+            .then(function (result) {
+                jwt = result;
+                console.log(jwt);
+                console.log(jwt.jwt);
+            })
+            .catch(error => console.log('error', error));
+
         console.log("logging in");
-        if (username === loggingUsername && authCode === loggingAuthCode) {
+
+        if (authCode === loggingAuthCode) {
             setIsAuthenticated(true);
         }
-        setIsAuthenticated(true)//todo remove at end of work! --------------------------------------------------
+        setIsAuthenticated(false)//todo remove at end of work! --------------------------------------------------
     };
 
     const logout = () => {
@@ -43,7 +72,7 @@ function App() {
             redirect: 'follow'
         };
 
-        fetch("http://localhost:8500/login?userID=" + username.replace("#", "%23") + "&guildID=164834533001134080", requestOptions)
+        fetch("http://localhost:8500/code?userID=" + username.replace("#", "%23") + "&guildID=164834533001134080", requestOptions)
             .then(function (response) {
                 if (!response.ok) {
                     throw new Error("HTTP status " + response.status);
@@ -54,7 +83,6 @@ function App() {
                 console.log(result);
                 console.log(result.code);
                 loggingAuthCode = result.code;
-                loggingUsername = result.username;
             })
             .catch(error => console.log('error', error));
     }

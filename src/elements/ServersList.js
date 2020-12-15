@@ -15,9 +15,21 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme => ({})))
 
 function getItems() {
+    var myHeaders = new Headers();
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const credentials = "Basic " + username + ":" + password;
+    myHeaders.append("Authorization", credentials);
+
+    var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+
+    return ['Inbox', 'Starred', 'Send email', 'Drafts', 'test'];
 
 }
-
 
 function ServerList() {
     const [selectedIndex, setSelectedIndex] = React.useState(0);
@@ -29,7 +41,7 @@ function ServerList() {
 
     return (
         <List disablePadding>
-            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+            {getItems().map((text, index) => (
                 <ListItem  button key={text}
                            selected={selectedIndex === index}
                            onClick={(event) => handleListItemClick(event, index)}
