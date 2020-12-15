@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
+import {jwtContext} from './App'
 
 const darkTheme = createMuiTheme({
     palette: {
@@ -16,7 +17,9 @@ ReactDOM.render(
     <React.StrictMode>
         <ThemeProvider theme={darkTheme}>
             <CssBaseline/>
-            <App/>
+            <jwtContext.Provider value={"test"}>
+                <App/>
+            </jwtContext.Provider>
         </ThemeProvider>
     </React.StrictMode>,
     document.getElementById('root')

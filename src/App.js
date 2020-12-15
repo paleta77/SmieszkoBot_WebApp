@@ -10,6 +10,8 @@ import ProtectedRoute from "./ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
 import RootPage from "./pages/RootPage";
 
+export const jwtContext = React.createContext("test context");
+
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -42,17 +44,15 @@ function App() {
             })
             .then(function (result) {
                 jwt = result;
-                console.log(jwt);
-                console.log(jwt.jwt);
+                if (jwt.jwt !== "") {
+                    setIsAuthenticated(true);
+                    console.log("jwt: " + jwt.jwt);
+                    console.log(jwt);
+                }
             })
             .catch(error => console.log('error', error));
 
-        console.log("logging in");
-
-        if (authCode === loggingAuthCode) {
-            setIsAuthenticated(true);
-        }
-        setIsAuthenticated(false)//todo remove at end of work! --------------------------------------------------
+        setIsAuthenticated(true)//todo remove at end of work! --------------------------------------------------
     };
 
     const logout = () => {
