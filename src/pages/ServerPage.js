@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useState} from "react";
 import {Link, useParams} from "react-router-dom";
 import {jwtContext} from "../App";
 import {List, ListItem, Typography} from "@material-ui/core";
@@ -32,17 +32,36 @@ async function getUsers(jwt, id) {
 function ServerPage(){
     let { id } = useParams();
     const jsonWebToken = useContext(jwtContext);
+    const [usersList, setUsersList] = React.useState([]);
 
-    getUsers(jsonWebToken, id).then(users => {
-        console.log("getting users");
-        let usersListText = users.toString();
-        usersList = usersListText.substr(0, usersListText.length - 1).split(",");
-        console.log(usersList);
-        }
-    )
+    const credentials = "Bearer " + jsonWebToken[0];
 
-    console.log("auto getted users");
-    console.log(usersList);
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", credentials);
+
+    var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+
+
+    React.useEffect(function effectFunction() {
+        fetch("http://localhost:8500/guild?guildName=" + id + "&content=members", requestOptions)
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error("HTTP status " + response.status);
+                }
+                return response.json();
+            })
+            .then(function (result) {
+                console.log(result);
+                setUsersList(result.toString().substr(0, result.toString().length-1).split(","));
+            })
+            .catch(error => console.log('error', error));
+
+
+    }, [id]);
 
     return (
         <div>
