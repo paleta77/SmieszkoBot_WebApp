@@ -130,7 +130,7 @@ export function Dashboard({logout, ...rest}) {
                         <Divider/>
                         <ListItem
                             button
-                            selected={selectedIndex === 1}
+                            selected={selectedIndex === 3}
                             onClick={logout}
                         >
                             <ListItemIcon>
