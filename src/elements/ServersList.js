@@ -10,12 +10,11 @@ import {jwtContext} from "../App";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme => ({})))
-let serverList = ['Inbox', 'Starred', 'Send email', 'Drafts', 'test'];
+let serverList = ['Wczytywanie'];
 
 async function getItems(jwt) {
 
     const credentials = "Bearer " + jwt[0];
-    console.log(jwt[0]);
 
     var myHeaders = new Headers();
     myHeaders.append("Authorization", credentials);
@@ -45,7 +44,6 @@ function ServerList() {
     };
 
     getItems(jsonWebToken).then(servers => {
-        console.log(servers);
         let serversListText = servers.toString();
         serverList = serversListText.substr(0, serversListText.length - 1).split(",");
     });
