@@ -4,8 +4,8 @@ import {jwtContext} from '../App'
 
 function InBox(){
 
-    const coolMessage = useContext(jwtContext);;
-
+    const coolMessage = useContext(jwtContext);
+    console.log(coolMessage);
 
     return(
             <Typography paragraph>

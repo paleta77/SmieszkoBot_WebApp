@@ -12,8 +12,8 @@ import RootPage from "./pages/RootPage";
 
 export const jwtContext = React.createContext("test context");
 
-
 function App() {
+    const [context, setContext] = useState("default context value");
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     let loggingAuthCode = "abc";
     let jwt = "";
@@ -46,16 +46,18 @@ function App() {
                 jwt = result;
                 if (jwt.jwt !== "") {
                     setIsAuthenticated(true);
+                    setContext(jwt.jwt);
                     console.log("jwt: " + jwt.jwt);
                     console.log(jwt);
                 }
             })
             .catch(error => console.log('error', error));
 
-        setIsAuthenticated(true)//todo remove at end of work! --------------------------------------------------
+        //setIsAuthenticated(true)//todo remove at end of work! --------------------------------------------------
     };
 
     const logout = () => {
+        console.log("logging out");
         setIsAuthenticated(false);
     };
 
@@ -100,12 +102,14 @@ function App() {
                             />
                         )}
                     </Route>
+                    <jwtContext.Provider value={[context, setContext]}>
                     <ProtectedRoute
                         isAuthenticated={isAuthenticated}
                         path="/dashboard"
                         logout={logout}
                         component={Dashboard}
                     />
+                    </jwtContext.Provider>
                     <Route path="*">
                         <div>404 Not found</div>
                     </Route>

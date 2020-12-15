@@ -20,6 +20,7 @@ import {Switch, Route, Link} from "react-router-dom";
 import Inbox from "./Inbox";
 import OutBox from "./OutBox";
 import ServerPage from "./ServerPage";
+import {Divider} from "@material-ui/core";
 
 export function Dashboard({logout, ...rest}) {
 
@@ -126,6 +127,17 @@ export function Dashboard({logout, ...rest}) {
                         <Collapse in={open}>
                             <ServerList/>
                         </Collapse>
+                        <Divider/>
+                        <ListItem
+                            button
+                            selected={selectedIndex === 1}
+                            onClick={logout}
+                        >
+                            <ListItemIcon>
+                                <MailIcon/>
+                            </ListItemIcon>
+                            <ListItemText primary="Wyloguj"/>
+                        </ListItem>
                     </List>
 
                 </div>
