@@ -12,6 +12,7 @@ import Button from "@material-ui/core/Button";
 import InputIcon from "@material-ui/icons/Input";
 import {Link} from "react-router-dom";
 import SendIcon from '@material-ui/icons/Send';
+import {encryptRSA} from '../Crypter';
 
 function InBox() {
     const [guildsList, setGuildsList] = React.useState([]);
@@ -147,7 +148,7 @@ function InBox() {
                     </Select>}
             </FormControl>
             <TextField
-                id="standard-basic"
+                id="topic"
                 label="Temat"
                 multiline
                 rows={1}
@@ -156,7 +157,7 @@ function InBox() {
                 className={classes.sendButton}
             />
             <TextField
-                id="standard-basic"
+                id="message"
                 label="Treść"
                 multiline
                 rows={15}
@@ -167,7 +168,7 @@ function InBox() {
             <Button
                 variant={"contained"}
                 startIcon={<SendIcon/>}
-
+                onClick={encryptRSA("test")}
                 >
                 Wyślij
             </Button>
