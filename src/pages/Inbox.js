@@ -1,26 +1,78 @@
 import React, { useContext } from "react";
 import Typography from "@material-ui/core/Typography"
 import {jwtContext} from '../App'
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import { makeStyles } from '@material-ui/core/styles';
 
 function InBox(){
+    const [guildsList, setGuildsList] = React.useState([]);
+    const [selectedGuild, setSelectedGuild] = React.useState('Wybierz');
+    const jsonWebToken = useContext(jwtContext);
 
-    const coolMessage = useContext(jwtContext);
-    console.log(coolMessage);
+    const handleChange = (event) => {
+        setSelectedGuild(event.target.value);
+    };
+
+    React.useEffect(function effectFunction() {
+        const credentials = "Bearer " + jsonWebToken[0];
+
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", credentials);
+
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+
+        let username = "paleta77#3712";
+
+        fetch("http://localhost:8500/user?userID=" + username.replace("#", "%23"), requestOptions)
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error("HTTP status " + response.status);
+                }
+                return response.json();
+            })
+            .then(function (result) {
+                console.log(result);
+                setGuildsList(result.toString().substr(0, result.toString().length-1).split(","));
+            })
+            .catch(error => console.log('error', error));
+
+        setGuildsList(guildsList);
+
+    }, []);
+
+    const useStyles = makeStyles((theme) => ({
+        formControl: {
+            margin: theme.spacing(1),
+            minWidth: 120,
+        },
+        selectEmpty: {
+            marginTop: theme.spacing(2),
+        },
+    }));
+
+    const classes = useStyles();
 
     return(
-            <Typography paragraph>
-                {coolMessage}
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum
-                facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit
-                gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id
-                donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-                adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras.
-                Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis
-                imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget
-                arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-                donec massa sapien faucibus et molestie ac.
-            </Typography>
+        <FormControl className={classes.formControl}>
+            <InputLabel id="demo-simple-select-label">Serwer adresata</InputLabel>
+            <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={selectedGuild}
+                onChange={handleChange}
+            >
+                {guildsList.map((text) => (
+                    <MenuItem value={text}>{text}</MenuItem>
+                    ))}
+            </Select>
+        </FormControl>
     )
 }
 

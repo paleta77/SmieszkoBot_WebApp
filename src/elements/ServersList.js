@@ -24,6 +24,7 @@ async function getItems(jwt) {
         headers: myHeaders,
         redirect: 'follow'
     };
+
     let username = "paleta77#3712";
 
     const response = await fetch("http://localhost:8500/user?userID=" + username.replace("#", "%23"), requestOptions)
