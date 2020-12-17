@@ -45,8 +45,8 @@ export function encryptRSA(from, to, topic, message){
         parts: []
     };
 
-    for(let i = 0; i<jsonToEncryptInBlocks.length-1; i++){
-        body.parts.push(botPublicKey.encrypt(jsonToEncryptInBlocks, "base64", "utf8"));
+    for(let i = 0; i<jsonToEncryptInBlocks.length; i++){
+        body.parts.push(botPublicKey.encrypt(jsonToEncryptInBlocks[i], "base64", "utf8"));
     }
 
 
