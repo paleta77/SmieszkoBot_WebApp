@@ -125,7 +125,7 @@ function InBox() {
                 <InputLabel id="demo-simple-select-label">Adresat</InputLabel>
                 {selectedGuild.length > 0 ?
                     <Select
-                        id="guild"
+                        id="to"
                         value={selectedUser}
                         onChange={handleUserChange}
                     >
@@ -169,10 +169,11 @@ function InBox() {
                 //onClick={encryptRSA("test")}
                 onClick={() => {encryptRSA(
                     "paleta77#3712",
-                    document.getElementById("from").value,
+                    document.getElementById("to").value,
+                    document.getElementById("topic").value,
                     document.getElementById("message").value,
                 )}}
-                >
+            >
                 Wyślij
             </Button>
         </div>

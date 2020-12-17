@@ -1,7 +1,7 @@
 import React from "react";
 const NodeRSA = require('node-rsa');
 
-export function encryptRSA(from, to, message){
+export function encryptRSA(from, to, topic, message){
 
     const botPublicKey = new NodeRSA("-----BEGIN PUBLIC KEY-----\n" +
         "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDGnVXr+61Tz+oUF1fzT7hcvLBx\n" +
@@ -31,15 +31,24 @@ export function encryptRSA(from, to, message){
 
     const jsonToEncrypt = {
         author: from,
+        topic: topic,
         to: to,
         msg: message
     };
 
-    console.log(jsonToEncrypt);
-    console.log(botPublicKey);
-    console.log(webAppPrivateKey);
+    // console.log(jsonToEncrypt);
+    // console.log(botPublicKey);
+    // console.log(webAppPrivateKey);
 
-    const encryptedJson = botPublicKey.encrypt(JSON.stringify(jsonToEncrypt), "base64", "utf8");
+    const jsonToEncryptInBlocks = JSON.stringify(jsonToEncrypt).match(new RegExp('.{1,' + botPublicKey.getMaxMessageSize() + '}', 'g'));
+    let body = {
+        parts: []
+    };
+
+    for(let i = 0; i<jsonToEncryptInBlocks.length-1; i++){
+        body.parts.push(botPublicKey.encrypt(jsonToEncryptInBlocks, "base64", "utf8"));
+    }
+
 
 //'{"msg":"test"}'
 
@@ -50,7 +59,7 @@ export function encryptRSA(from, to, message){
         method: 'POST',
         headers: myHeaders,
         redirect: 'follow',
-        body: encryptedJson,
+        body: JSON.stringify(body),
         //mode: 'no-cors'
     };
 
