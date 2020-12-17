@@ -125,8 +125,7 @@ function InBox() {
                 <InputLabel id="demo-simple-select-label">Adresat</InputLabel>
                 {selectedGuild.length > 0 ?
                     <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
+                        id="guild"
                         value={selectedUser}
                         onChange={handleUserChange}
                     >
@@ -136,8 +135,7 @@ function InBox() {
                     </Select>
                     :
                     <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
+                        id="to"
                         value={selectedUser}
                         onChange={handleUserChange}
                         disabled
@@ -168,7 +166,12 @@ function InBox() {
             <Button
                 variant={"contained"}
                 startIcon={<SendIcon/>}
-                onClick={encryptRSA("test")}
+                //onClick={encryptRSA("test")}
+                onClick={() => {encryptRSA(
+                    "paleta77#3712",
+                    document.getElementById("from").value,
+                    document.getElementById("message").value,
+                )}}
                 >
                 Wyślij
             </Button>
