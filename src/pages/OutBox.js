@@ -172,6 +172,7 @@ function InBox() {
                     document.getElementById("to").value,
                     document.getElementById("topic").value,
                     document.getElementById("message").value,
+                    jsonWebToken
                 )}}
             >
                 Wyślij

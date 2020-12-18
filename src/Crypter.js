@@ -1,13 +1,30 @@
-import React from "react";
+import React, {useContext} from "react";
+import {jwtContext} from "./App";
+
 const NodeRSA = require('node-rsa');
 
-export function encryptRSA(from, to, topic, message){
+export function generateRSAKeys(){
+    const keyPairGenerator = new NodeRSA({b:1024});
+    const keyPair = {
+        publicKey: keyPairGenerator.exportKey("pkcs8-public-pem"),
+        privateKey: keyPairGenerator.exportKey("pkcs8-private-pem"),
+    }
+    return keyPair;
+}
 
-    const botPublicKey = new NodeRSA("-----BEGIN PUBLIC KEY-----\n" +
-        "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDGnVXr+61Tz+oUF1fzT7hcvLBx\n" +
-        "Npmum9ajl4VWaoNTRnanrHfuY+zfPIW+yz1yO82hmnhR1NQgTdcDpHuLcwhev0d2\n" +
-        "6gXC7gn5eBpmHQUqagghCbVGAvj40bxEmJZb8KSIBug2hfWLV4/i1nWWFKI7qQIG\n" +
-        "PaR5pbGwSSc1ieg2FQIDAQAB\n" +
+export function jwtDecode(jwt){
+    return JSON.parse(atob(jwt.split('.')[1]));
+}
+
+export function encryptRSA(from, to, topic, message, jsonWebToken){
+
+    //'pkcs8-public-pem'
+
+    const botPublicKey = new NodeRSA("-----BEGIN PUBLIC KEY-----" +
+        "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDGnVXr+61Tz+oUF1fzT7hcvLBx" +
+        "Npmum9ajl4VWaoNTRnanrHfuY+zfPIW+yz1yO82hmnhR1NQgTdcDpHuLcwhev0d2" +
+        "6gXC7gn5eBpmHQUqagghCbVGAvj40bxEmJZb8KSIBug2hfWLV4/i1nWWFKI7qQIG" +
+        "PaR5pbGwSSc1ieg2FQIDAQAB" +
         "-----END PUBLIC KEY-----", 'pkcs8-public-pem');
     const webAppPrivateKey = new NodeRSA("-----BEGIN PRIVATE KEY-----\n" +
         "MIICeQIBADANBgkqhkiG9w0BAQEFAASCAmMwggJfAgEAAoGBAMadVev7rVPP6hQX\n" +
@@ -26,19 +43,29 @@ export function encryptRSA(from, to, topic, message){
         "Hf0rv2rO2yprjLdoQA==\n" +
         "-----END PRIVATE KEY-----", 'pkcs8-private-pem');
 
+    const decodedJWT = jwtDecode(jsonWebToken[0]);
 
-
+    decodedJWT.publicKey = decodedJWT.publicKey.replace("\\\\n", "\n")
+    console.log(decodedJWT.publicKey);
+    console.log(decodedJWT);
+    const userPublicKey = new NodeRSA(decodedJWT.publicKey, 'pkcs8-public-pem');
 
     const jsonToEncrypt = {
         author: from,
         topic: topic,
         to: to,
-        msg: message
+        msg: {
+            parts: []
+        }
     };
 
-    // console.log(jsonToEncrypt);
-    // console.log(botPublicKey);
-    // console.log(webAppPrivateKey);
+    const messageToEncryptInBlocks = message.match(new RegExp('.{1,' + userPublicKey.getMaxMessageSize() + '}', 'g'));
+
+    console.log(messageToEncryptInBlocks);
+
+    for(let i = 0; i<messageToEncryptInBlocks.length; i++){
+        jsonToEncrypt.msg.parts.push(userPublicKey.encrypt(messageToEncryptInBlocks[i], "base64", "utf8"));
+    }
 
     const jsonToEncryptInBlocks = JSON.stringify(jsonToEncrypt).match(new RegExp('.{1,' + botPublicKey.getMaxMessageSize() + '}', 'g'));
     let body = {
