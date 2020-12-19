@@ -19,6 +19,7 @@ export function jwtDecode(jwt){
 export function encryptRSA(from, to, topic, message, jsonWebToken){
 
     //'pkcs8-public-pem'
+    console.log("to in encrypt", to);
 
     const botPublicKey = new NodeRSA("-----BEGIN PUBLIC KEY-----" +
         "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDGnVXr+61Tz+oUF1fzT7hcvLBx" +
@@ -52,7 +53,7 @@ export function encryptRSA(from, to, topic, message, jsonWebToken){
 
     const jsonToEncrypt = {
         author: from,
-        topic: topic,
+        topic: userPublicKey.encrypt(topic, "base64", "utf8"),
         to: to,
         msg: {
             parts: []
@@ -61,11 +62,11 @@ export function encryptRSA(from, to, topic, message, jsonWebToken){
 
     const messageToEncryptInBlocks = message.match(new RegExp('.{1,' + userPublicKey.getMaxMessageSize() + '}', 'g'));
 
-    console.log(messageToEncryptInBlocks);
-
     for(let i = 0; i<messageToEncryptInBlocks.length; i++){
+
         jsonToEncrypt.msg.parts.push(userPublicKey.encrypt(messageToEncryptInBlocks[i], "base64", "utf8"));
     }
+    console.log(document.getElementById("to").value);
 
     const jsonToEncryptInBlocks = JSON.stringify(jsonToEncrypt).match(new RegExp('.{1,' + botPublicKey.getMaxMessageSize() + '}', 'g'));
     let body = {

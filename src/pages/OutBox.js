@@ -18,11 +18,16 @@ function InBox() {
     const [guildsList, setGuildsList] = React.useState([]);
     const [usersList, setUsersList] = React.useState([]);
     const [selectedUser, setSelectedUser] = React.useState([]);
+    let selectedUserString = "";
     const [selectedGuild, setSelectedGuild] = React.useState([]);
     const jsonWebToken = useContext(jwtContext);
 
     const handleUserChange = (event) => {
         setSelectedUser(event.target.value);
+        selectedUserString = event.target.value;
+        console.log("event.target" ,event.target);
+        console.log("event.target.value", event.target.value);
+        console.log("selectedUser", selectedUserString);
     }
 
     const handleGuildChange = (event) => {
@@ -52,8 +57,6 @@ function InBox() {
                 setUsersList(result.toString().substr(0, result.toString().length - 1).split(","));
             })
             .catch(error => console.log('error', error));
-
-        //setGuildsList(guildsList);
 
     };
 
@@ -126,6 +129,7 @@ function InBox() {
                 {selectedGuild.length > 0 ?
                     <Select
                         id="to"
+                        labelId="demo-simple-select-label"
                         value={selectedUser}
                         onChange={handleUserChange}
                     >
@@ -136,6 +140,7 @@ function InBox() {
                     :
                     <Select
                         id="to"
+                        labelId="demo-simple-select-label"
                         value={selectedUser}
                         onChange={handleUserChange}
                         disabled
@@ -169,7 +174,7 @@ function InBox() {
                 //onClick={encryptRSA("test")}
                 onClick={() => {encryptRSA(
                     "paleta77#3712",
-                    document.getElementById("to").value,
+                    selectedUser,
                     document.getElementById("topic").value,
                     document.getElementById("message").value,
                     jsonWebToken
