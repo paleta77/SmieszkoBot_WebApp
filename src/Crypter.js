@@ -54,6 +54,8 @@ export function decryptString(message, privateKey){
 
     }
     console.log("decryptedMessage", decryptedMessage);
+
+    return decryptedMessage;
 }
 
 export function sendMessageEncryptedRSA(to, topic, message, jsonWebToken){

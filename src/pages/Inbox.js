@@ -34,15 +34,27 @@ function getFromUser(item) {
     return item.from_user;
 }
 
+function useForceUpdate(){
+    const [value, setValue] = React.useState(0); // integer state
+    return () => setValue(value => ++value); // update the state to force render
+}
+
+
 function OutBox() {
     const jsonWebToken = useContext(jwtContext);
     const [messageList, setMessageList] = React.useState([]);
+    const [value, setValue] = React.useState(0);
 
     function decryptAllMessages(privateKey){
+
+        console.log("decrypting mess");
         for(let i = 0; i<messageList.length; i++){
-            //decryptString(messageList[i].topic, privateKey);
-            decryptString(messageList[i].message, privateKey);
+            messageList[i].topic = decryptString(messageList[i].topic, privateKey);
+            messageList[i].message = decryptString(messageList[i].message, privateKey);
         }
+        console.log("messageList", messageList);
+        let somevalue = value;
+        setValue(++somevalue);
     }
 
     React.useEffect(function effectFunction() {
