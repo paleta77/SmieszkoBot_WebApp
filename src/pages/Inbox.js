@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
     inline: {
         display: 'inline',
     },
+    buttonClass: {
+        marginTop: theme.spacing(2)
+    }
 }));
 
 // let messages = {
@@ -53,7 +56,7 @@ function OutBox() {
             messageList[i].message = decryptString(messageList[i].message, privateKey);
         }
         console.log("messageList", messageList);
-        let somevalue = value;
+        let somevalue = value; //to refresh messages
         setValue(++somevalue);
     }
 
@@ -106,10 +109,11 @@ function OutBox() {
                 label="Klucz prywatny"
                 defaultValue=""/>
             <Button
+                className={classes.buttonClass}
                 variant={"contained"}
                 startIcon={<InputIcon/>}
                 onClick={() =>{decryptAllMessages(document.getElementById("privateKey").value)}}>
-                Zaloguj
+                Odszyfruj
             </Button>
         <List>
             {messageList.map((mes) => (

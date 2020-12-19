@@ -22,22 +22,28 @@ export function decryptString(message, privateKey){
     // privateKeyBuilder += "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBALUgiFGogiNrPMqcdL1akwR4SPxX4CN+HlVGfywxRYD55sSRqDdTCN5kR0Rj9bUtegopAgkrnLQmgBpAzyD3ndFLaH8gtOoDiT6cPIuOyldRWyoVpaJ+632KTWanEeyW+j4Vh4+SShwSEORB9rQuMKUTx0qHBROK8+NiPSnUhkWPAgMBAAECgYAWmhKorfBfXxhc6B0hK9ZArondA1Iy26AJYByqdROJPqXvTYXCMZhft/+0pwyYKS6bafaZElohmNRPclrmcD+/Eg7e757qMZ9oqW+2wbd8Qy7CF8HufULvEYsg44JBKomnra2wBcDC4mAKvq3zuS6MrDaKmEEkvLc9I/eI8AADcQJBAPSB//eb5rLqFAc/ecU17e03bnV0nLE7XNpD8cWPPTqhGd/FNwL8gj1lDLLC0vvLaA0RmPO8gmLD+zcc2UmsHosCQQC9o+oT8PNFTWSHlDJcYrPPWnlfFFdHyilwC+J8XUmZfVJPQpMNXnwelMSBGCHVmnV5Th3MQ5cL47f8Znf/1bmNAkAFW4PcTRI1AWQG9KEabSAVfo1xDWkRiRdzwOFfTtAspLMIcC3QZvADoF8y24n78m0JPEV5sbu5pkmu33bzYk4ZAkBqbNHRrRgpHVy8hZuZoz67sE+K31R4Emkc216YYpYKUH1fw8HY79yCIQUCWbOrN0qT8BXi60+aOYqoWC0h4ySFAkEA2y1j5I/zLj/CBcD7HrP7dU8+cTfnq7RdAwZB5hLZjvqy4toeDir6NU5Twny93hyzftdKjlTh8S5QCk2u5FEZvQ==";
     // privateKeyBuilder += "\n-----END PRIVATE KEY-----";
     // console.log(privateKeyBuilder);
-    const userPrivateKey = new NodeRSA("-----BEGIN PRIVATE KEY-----" +
-        "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBALhvzMkqrPcHi9nY" +
-        "lIOnKdKhy0We1mUQXC4bkjrhej9/BGvI8r4wrtWROw3oO1a54GnWdlqQxzQNyXOY" +
-        "gMpJlH0Ew1R7Zk11sgNtEgek0DOZyggdz+lVsVsM5QYe/2YCxZ/LoCNIeCjA+k3W" +
-        "GD0/HQnPYOHcMOOkcfE/g3JZokzdAgMBAAECgYAk9lLmJeVQBHUkjWEGGWQqUD56" +
-        "j2CMFIFExEXEAxgKzZvHNhhfwUXoixh4qwfpU4sD6vUBJW6mofSzc+aro59cLzOY" +
-        "3C0+boErNLJdPZnx7qBEmXLq6t+j46+xwAm9IqvHTwbfKWxDO/zaaJk1LngMR2db" +
-        "vmt5NIA+8xcgG+eeCQJBAO6v2bIv0cpN0LPDEb+8r54gMiCSmpeoZZg2VOp4xwte" +
-        "Sez+6dgCawSYhhOJHQLzBAfEamb3U0AU/1ygMhvmoqcCQQDF0JV+XSRkVWPsOnTw" +
-        "v3pN382dChO5+Excj2ZnBL8Ui4MI9ioJDL9oQWC9OdX6pisO1v8VV6qC0b9+lWEB" +
-        "bpjbAkEAv9QmsvWJtvyJMiAhoKaFwiEACHuqsR5O4GEyJ+t/lRxnb4iD6e4vklb+" +
-        "0q6M2XT0FUX/eddmWgdGIGxDOXdH2wJAZXKFWFrYMQSBzEJmepkYVhuyzRi/6R3n" +
-        "u4hnUenjPNwXhV8JS77X4tW0kRa6IGNbra6g/wcIkTKUbIybRSq9BQJARlm/agkB" +
-        "NNEUnXODGzI27fj4c8hDDmsveUsFN9D1BVgjv7lsCze2nSxaCYOxu5vrAztGGxsZ" +
-        "hV0gvSeNKQ9qCw==" +
-        "-----END PRIVATE KEY-----", 'pkcs8-private-pem');
+    // const userPrivateKey = new NodeRSA("-----BEGIN PRIVATE KEY-----" +
+    //     "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBALhvzMkqrPcHi9nY" +
+    //     "lIOnKdKhy0We1mUQXC4bkjrhej9/BGvI8r4wrtWROw3oO1a54GnWdlqQxzQNyXOY" +
+    //     "gMpJlH0Ew1R7Zk11sgNtEgek0DOZyggdz+lVsVsM5QYe/2YCxZ/LoCNIeCjA+k3W" +
+    //     "GD0/HQnPYOHcMOOkcfE/g3JZokzdAgMBAAECgYAk9lLmJeVQBHUkjWEGGWQqUD56" +
+    //     "j2CMFIFExEXEAxgKzZvHNhhfwUXoixh4qwfpU4sD6vUBJW6mofSzc+aro59cLzOY" +
+    //     "3C0+boErNLJdPZnx7qBEmXLq6t+j46+xwAm9IqvHTwbfKWxDO/zaaJk1LngMR2db" +
+    //     "vmt5NIA+8xcgG+eeCQJBAO6v2bIv0cpN0LPDEb+8r54gMiCSmpeoZZg2VOp4xwte" +
+    //     "Sez+6dgCawSYhhOJHQLzBAfEamb3U0AU/1ygMhvmoqcCQQDF0JV+XSRkVWPsOnTw" +
+    //     "v3pN382dChO5+Excj2ZnBL8Ui4MI9ioJDL9oQWC9OdX6pisO1v8VV6qC0b9+lWEB" +
+    //     "bpjbAkEAv9QmsvWJtvyJMiAhoKaFwiEACHuqsR5O4GEyJ+t/lRxnb4iD6e4vklb+" +
+    //     "0q6M2XT0FUX/eddmWgdGIGxDOXdH2wJAZXKFWFrYMQSBzEJmepkYVhuyzRi/6R3n" +
+    //     "u4hnUenjPNwXhV8JS77X4tW0kRa6IGNbra6g/wcIkTKUbIybRSq9BQJARlm/agkB" +
+    //     "NNEUnXODGzI27fj4c8hDDmsveUsFN9D1BVgjv7lsCze2nSxaCYOxu5vrAztGGxsZ" +
+    //     "hV0gvSeNKQ9qCw==" +
+    //     "-----END PRIVATE KEY-----", 'pkcs8-private-pem');
+    console.log(privateKey);
+    //privateKey = privateKey.replace(" ", "");
+
+    console.log(privateKey);
+
+    const userPrivateKey = new NodeRSA(privateKey, 'pkcs8-private-pem');
 
     const userPublicKey = new NodeRSA("-----BEGIN PUBLIC KEY-----" +
         "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC4b8zJKqz3B4vZ2JSDpynSoctF" +
