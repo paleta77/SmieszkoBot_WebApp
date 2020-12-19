@@ -52,10 +52,10 @@ export function encryptRSA(from, to, topic, message, jsonWebToken){
     const userPublicKey = new NodeRSA(decodedJWT.publicKey, 'pkcs8-public-pem');
 
     const jsonToEncrypt = {
-        author: from,
+        from_user: from,
         topic: userPublicKey.encrypt(topic, "base64", "utf8"),
-        to: to,
-        msg: {
+        to_user: to,
+        message: {
             parts: []
         }
     };
@@ -64,7 +64,7 @@ export function encryptRSA(from, to, topic, message, jsonWebToken){
 
     for(let i = 0; i<messageToEncryptInBlocks.length; i++){
 
-        jsonToEncrypt.msg.parts.push(userPublicKey.encrypt(messageToEncryptInBlocks[i], "base64", "utf8"));
+        jsonToEncrypt.message.parts.push(userPublicKey.encrypt(messageToEncryptInBlocks[i], "base64", "utf8"));
     }
     console.log(document.getElementById("to").value);
 

@@ -7,10 +7,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import {makeStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import {Container} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import InputIcon from "@material-ui/icons/Input";
-import {Link} from "react-router-dom";
 import SendIcon from '@material-ui/icons/Send';
 import {encryptRSA} from '../Crypter';
 
