@@ -9,7 +9,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from "@material-ui/core/Button";
 import SendIcon from '@material-ui/icons/Send';
-import {encryptRSA, jwtDecode} from '../Crypter';
+import {sendMessageEncryptedRSA, jwtDecode} from '../Crypter';
 
 function InBox() {
     const [guildsList, setGuildsList] = React.useState([]);
@@ -175,7 +175,7 @@ function InBox() {
                 variant={"contained"}
                 startIcon={<SendIcon/>}
                 //onClick={encryptRSA("test")}
-                onClick={() => {encryptRSA(
+                onClick={() => {sendMessageEncryptedRSA(
                     selectedUser,
                     document.getElementById("topic").value,
                     document.getElementById("message").value,

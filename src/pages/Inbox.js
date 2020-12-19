@@ -7,6 +7,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import {jwtContext} from "../App";
+import {TextFields} from "@material-ui/icons";
+import TextField from "@material-ui/core/TextField";
+import InputIcon from "@material-ui/icons/Input";
+import Button from "@material-ui/core/Button";
+import {decryptString} from "../Crypter"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,13 +30,20 @@ const useStyles = makeStyles((theme) => ({
 
 //let messageList= [];
 
-function getFromUser(item){
+function getFromUser(item) {
     return item.from_user;
 }
 
-function OutBox(){
+function OutBox() {
     const jsonWebToken = useContext(jwtContext);
     const [messageList, setMessageList] = React.useState([]);
+
+    function decryptAllMessages(privateKey){
+        for(let i = 0; i<messageList.length; i++){
+            //decryptString(messageList[i].topic, privateKey);
+            decryptString(messageList[i].message, privateKey);
+        }
+    }
 
     React.useEffect(function effectFunction() {
         const credentials = "Bearer " + jsonWebToken[0];
@@ -56,7 +68,7 @@ function OutBox(){
                 console.log(messagesJson);
                 setMessageList([]);
                 let tempMessageList = [];
-                for(let i = 0; i<messagesJson.messagesList.length; i++){
+                for (let i = 0; i < messagesJson.messagesList.length; i++) {
                     let message = {
                         from_user: messagesJson.messagesList[i].from_user,
                         to_user: messagesJson.messagesList[i].to_user,
@@ -73,33 +85,45 @@ function OutBox(){
 
 
     const classes = useStyles();
-    return(
+    return (
+        <div>
+            <TextField
+                fullWidth
+                id="privateKey"
+                variant="outlined"
+                label="Klucz prywatny"
+                defaultValue=""/>
+            <Button
+                variant={"contained"}
+                startIcon={<InputIcon/>}
+                onClick={() =>{decryptAllMessages(document.getElementById("privateKey").value)}}>
+                Zaloguj
+            </Button>
         <List>
             {messageList.map((mes) => (
                 <div>
-
-
-            <ListItem>
-                    <ListItemAvatar>
-                        <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-                    </ListItemAvatar>
-                    <ListItemText
-                    primary={mes.topic}
-                    secondary={
-                            <Typography
-                                component="span"
-                                variant="body2"
-                                color="textPrimary"
-                            >
-                                {mes.from_user}
-                            </Typography>
-                    }
-                />
-            </ListItem>
+                    <ListItem>
+                        <ListItemAvatar>
+                            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg"/>
+                        </ListItemAvatar>
+                        <ListItemText
+                            primary={mes.topic}
+                            secondary={
+                                <Typography
+                                    component="span"
+                                    variant="body2"
+                                    color="textPrimary"
+                                >
+                                    {mes.from_user}
+                                </Typography>
+                            }
+                        />
+                    </ListItem>
                     <ListItem>{mes.message}</ListItem>
                 </div>
             ))}
         </List>
+        </div>
 
         //<Divider/>
         //{messageList.map((mes => mes.from_user))}
