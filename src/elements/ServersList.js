@@ -6,6 +6,7 @@ import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import {makeStyles} from "@material-ui/styles";
 import {Link} from "react-router-dom";
 import {jwtContext} from "../App";
+import {jwtDecode} from "../Crypter";
 
 const drawerWidth = 240;
 
@@ -24,8 +25,8 @@ async function getItems(jwt) {
         headers: myHeaders,
         redirect: 'follow'
     };
-
-    let username = "paleta77#3712";
+    const decodedJWT = jwtDecode(jwt[0]);
+    let username = decodedJWT.username;
 
     const response = await fetch("http://localhost:8500/user?userID=" + username.replace("#", "%23"), requestOptions)
     const serverList = await response.json();

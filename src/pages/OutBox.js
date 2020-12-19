@@ -9,7 +9,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from "@material-ui/core/Button";
 import SendIcon from '@material-ui/icons/Send';
-import {encryptRSA} from '../Crypter';
+import {encryptRSA, jwtDecode} from '../Crypter';
 
 function InBox() {
     const [guildsList, setGuildsList] = React.useState([]);
@@ -69,7 +69,8 @@ function InBox() {
             redirect: 'follow'
         };
 
-        let username = "paleta77#3712";
+        const decodedJWT = jwtDecode(jsonWebToken[0]);
+        let username = decodedJWT.username;
 
         fetch("http://localhost:8500/user?userID=" + username.replace("#", "%23"), requestOptions)
             .then(function (response) {
@@ -170,7 +171,6 @@ function InBox() {
                 startIcon={<SendIcon/>}
                 //onClick={encryptRSA("test")}
                 onClick={() => {encryptRSA(
-                    "paleta77#3712",
                     selectedUser,
                     document.getElementById("topic").value,
                     document.getElementById("message").value,

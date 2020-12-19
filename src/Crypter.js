@@ -13,10 +13,11 @@ export function generateRSAKeys(){
 }
 
 export function jwtDecode(jwt){
+    console.log("jwt decode", jwt);
     return JSON.parse(atob(jwt.split('.')[1]));
 }
 
-export function encryptRSA(from, to, topic, message, jsonWebToken){
+export function encryptRSA(to, topic, message, jsonWebToken){
 
     //'pkcs8-public-pem'
     console.log("to in encrypt", to);
@@ -52,7 +53,7 @@ export function encryptRSA(from, to, topic, message, jsonWebToken){
     const userPublicKey = new NodeRSA(decodedJWT.publicKey, 'pkcs8-public-pem');
 
     const jsonToEncrypt = {
-        from_user: from,
+        from_user: decodedJWT.username,
         topic: userPublicKey.encrypt(topic, "base64", "utf8"),
         to_user: to,
         message: {
