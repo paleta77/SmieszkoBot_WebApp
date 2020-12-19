@@ -19,6 +19,11 @@ function InBox() {
     const [selectedGuild, setSelectedGuild] = React.useState([]);
     const jsonWebToken = useContext(jwtContext);
 
+    function jwtDecode(jwt){
+        console.log("jwt decode", jwt);
+        return JSON.parse(atob(jwt.split('.')[1]));
+    }
+
     const handleUserChange = (event) => {
         setSelectedUser(event.target.value);
         selectedUserString = event.target.value;

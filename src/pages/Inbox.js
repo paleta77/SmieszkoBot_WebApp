@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 //     messagesList: ["test mess"]
 // };
 
-let messageList= [];
+//let messageList= [];
 
 function getFromUser(item){
     return item.from_user;
@@ -31,6 +31,7 @@ function getFromUser(item){
 
 function OutBox(){
     const jsonWebToken = useContext(jwtContext);
+    const [messageList, setMessageList] = React.useState([]);
 
     React.useEffect(function effectFunction() {
         const credentials = "Bearer " + jsonWebToken[0];
@@ -53,7 +54,8 @@ function OutBox(){
             })
             .then(function (messagesJson) {
                 console.log(messagesJson);
-                messageList = [];
+                setMessageList([]);
+                let tempMessageList = [];
                 for(let i = 0; i<messagesJson.messagesList.length; i++){
                     let message = {
                         from_user: messagesJson.messagesList[i].from_user,
@@ -62,8 +64,9 @@ function OutBox(){
                         message: messagesJson.messagesList[i].message
 
                     }
-                    messageList.push(message);
+                    tempMessageList.push(message);
                 }
+                setMessageList(tempMessageList);
             })
             .catch(error => console.log('error', error));
     }, []);

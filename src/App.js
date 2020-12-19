@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import RootPage from "./pages/RootPage";
 
 export const jwtContext = React.createContext("test context");
+export let jwtVariable;
 
 function App() {
     const [context, setContext] = useState("default context value");
@@ -18,7 +19,7 @@ function App() {
     let loggingAuthCode = "abc";
     let jwt = "";
 
-    const login = () => {
+    async function login() {
         let username = document.getElementById("username").value;
         let password = document.getElementById("password").value;
         let authCode = document.getElementById("authCode").value;
@@ -35,26 +36,17 @@ function App() {
             redirect: 'follow'
         };
 
-        fetch("http://localhost:8500/login?userID=" + username.replace("#", "%23"), requestOptions)
-            .then(function (response) {
-                if (!response.ok) {
-                    throw new Error("HTTP status " + response.status);
-                }
-                return response.json();
-            })
-            .then(function (result) {
-                jwt = result;
-                if (jwt.jwt !== "") {
-                    setIsAuthenticated(true);
-                    setContext(jwt.jwt);
-                    console.log("jwt: " + jwt.jwt);
-                    console.log(jwt);
-                }
-            })
-            .catch(error => console.log('error', error));
+        const response = await fetch("http://localhost:8500/login?userID=" + username.replace("#", "%23"), requestOptions)
+        const jwt = await response.json();
 
-        //setIsAuthenticated(true)//todo remove at end of work! --------------------------------------------------
-    };
+        if (jwt.jwt !== "") {
+            setContext(jwt.jwt);
+            jwtVariable = jwt.jwt;
+            if(context.jwt !=="default context value"){
+                setIsAuthenticated(true);
+            }
+        }
+    }
 
     const logout = () => {
         console.log("logging out");

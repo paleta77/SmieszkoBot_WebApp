@@ -12,7 +12,7 @@ export function generateRSAKeys(){
     return keyPair;
 }
 
-export function jwtDecode(jwt){
+function jwtDecode(jwt){
     console.log("jwt decode", jwt);
     return JSON.parse(atob(jwt.split('.')[1]));
 }

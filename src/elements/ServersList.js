@@ -5,13 +5,17 @@ import ListItemText from '@material-ui/core/ListItemText';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import {makeStyles} from "@material-ui/styles";
 import {Link} from "react-router-dom";
-import {jwtContext} from "../App";
-import {jwtDecode} from "../Crypter";
+import {jwtContext, jwtVariable} from "../App";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme => ({})))
 let serverList = ['Wczytywanie'];
+
+function jwtDecode(jwt){
+    console.log("jwt decode", jwt);
+    return JSON.parse(atob(jwt.split('.')[1]));
+}
 
 async function getItems(jwt) {
 
@@ -25,7 +29,7 @@ async function getItems(jwt) {
         headers: myHeaders,
         redirect: 'follow'
     };
-    const decodedJWT = jwtDecode(jwt[0]);
+    const decodedJWT = jwtDecode(jwtVariable);
     let username = decodedJWT.username;
 
     const response = await fetch("http://localhost:8500/user?userID=" + username.replace("#", "%23"), requestOptions)
