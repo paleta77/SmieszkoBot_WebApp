@@ -29,44 +29,45 @@ function getFromUser(item){
     return item.from_user;
 }
 
-async function getMessages(jwt){
-    const credentials = "Bearer " + jwt[0];
-
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", credentials);
-
-    var requestOptions = {
-        method: 'GET',
-        headers: myHeaders,
-        redirect: 'follow',
-    };
-
-    const response = await fetch("http://localhost:8500/crypto", requestOptions);
-    return await response.json();
-}
-
 function OutBox(){
     const jsonWebToken = useContext(jwtContext);
 
-    getMessages(jsonWebToken).then(messagesJson => {
-        messageList = [];
-        for(let i = 0; i<messagesJson.messagesList.length; i++){
-            let message = {
-                 from_user: messagesJson.messagesList[i].from_user,
-                 to_user: messagesJson.messagesList[i].to_user,
-                 topic: messagesJson.messagesList[i].topic,
-                 message: messagesJson.messagesList[i].message
+    React.useEffect(function effectFunction() {
+        const credentials = "Bearer " + jsonWebToken[0];
 
-            }
-            messageList.push(message);
-            //console.log("message", message);
-            //console.log("messageList", messageList);
-            //console.log("FromList", messageList.map(mes => mes.from_user));
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", credentials);
 
-            //console.log(messagesJson.messagesList[i]);
-        }
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow',
+        };
 
-    });
+        fetch("http://localhost:8500/crypto", requestOptions)
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error("HTTP status " + response.status);
+                }
+                return response.json();
+            })
+            .then(function (messagesJson) {
+                console.log(messagesJson);
+                messageList = [];
+                for(let i = 0; i<messagesJson.messagesList.length; i++){
+                    let message = {
+                        from_user: messagesJson.messagesList[i].from_user,
+                        to_user: messagesJson.messagesList[i].to_user,
+                        topic: messagesJson.messagesList[i].topic,
+                        message: messagesJson.messagesList[i].message
+
+                    }
+                    messageList.push(message);
+                }
+            })
+            .catch(error => console.log('error', error));
+    }, []);
+
 
     const classes = useStyles();
     return(
