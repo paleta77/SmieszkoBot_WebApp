@@ -75,31 +75,34 @@ function OutBox(){
     const classes = useStyles();
     return(
         <List>
-            <ListItem alignItems="flex-start">
-                {messageList.map(mes => mes.from_user)}
-                <ListItemAvatar>
-                    <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-                </ListItemAvatar>
-                <ListItemText
-                    primary="Brunch this weekend?"
+            {messageList.map((mes) => (
+                <div>
+
+
+            <ListItem>
+                    <ListItemAvatar>
+                        <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                    </ListItemAvatar>
+                    <ListItemText
+                    primary={mes.topic}
                     secondary={
-                        <React.Fragment>
                             <Typography
                                 component="span"
                                 variant="body2"
-                                className={classes.inline}
                                 color="textPrimary"
                             >
-                                Ali Connors
+                                {mes.from_user}
                             </Typography>
-                            {" — I'll be in your neighborhood doing errands this…"}
-                        </React.Fragment>
                     }
                 />
             </ListItem>
+                    <ListItem>{mes.message}</ListItem>
+                </div>
+            ))}
         </List>
 
         //<Divider/>
+        //{messageList.map((mes => mes.from_user))}
     )
 }
 
