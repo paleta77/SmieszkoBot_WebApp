@@ -69,7 +69,7 @@ function SendMessage() {
             //mode: 'no-cors'
         };
 
-        fetch("http://localhost:8500/guild?guildName=" + event.target.value + "&content=members", requestOptions)
+        fetch("http://localhost:8500/guild?guildName=" + event.target.value + "&content=registeredMembers", requestOptions)
             .then(function (response) {
                 if (!response.ok) {
                     throw new Error("HTTP status " + response.status);
