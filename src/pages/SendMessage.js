@@ -11,7 +11,7 @@ import Button from "@material-ui/core/Button";
 import SendIcon from '@material-ui/icons/Send';
 import {sendMessageEncryptedRSA, jwtDecode} from '../Crypter';
 
-function InBox() {
+function SendMessage() {
     const [guildsList, setGuildsList] = React.useState([]);
     const [usersList, setUsersList] = React.useState([]);
     const [selectedUser, setSelectedUser] = React.useState([]);
@@ -189,4 +189,4 @@ function InBox() {
     )
 }
 
-export default InBox;
+export default SendMessage;

@@ -43,7 +43,7 @@ function useForceUpdate(){
 }
 
 
-function OutBox() {
+function Box(boxType) {
     const jsonWebToken = useContext(jwtContext);
     const [messageList, setMessageList] = React.useState([]);
     const [value, setValue] = React.useState(0);
@@ -66,13 +66,15 @@ function OutBox() {
         var myHeaders = new Headers();
         myHeaders.append("Authorization", credentials);
 
+
+
         var requestOptions = {
             method: 'GET',
             headers: myHeaders,
             redirect: 'follow',
         };
 
-        fetch("http://localhost:8500/crypto", requestOptions)
+        fetch("http://localhost:8500/crypto?BoxType=" + boxType.boxType, requestOptions)
             .then(function (response) {
                 if (!response.ok) {
                     throw new Error("HTTP status " + response.status);
@@ -96,7 +98,7 @@ function OutBox() {
                 setMessageList(tempMessageList);
             })
             .catch(error => console.log('error', error));
-    }, []);
+    }, [boxType]);
 
 
     const classes = useStyles();
@@ -130,7 +132,10 @@ function OutBox() {
                                     variant="body2"
                                     color="textPrimary"
                                 >
-                                    {mes.from_user}
+                                    {boxType.boxType === "inbox" ?
+                                        mes.from_user
+                                    :
+                                        mes.to_user}
                                 </Typography>
                             }
                         />
@@ -146,4 +151,4 @@ function OutBox() {
     )
 }
 
-export default OutBox;
+export default Box;

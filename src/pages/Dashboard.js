@@ -17,8 +17,8 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import DnsIcon from '@material-ui/icons/Dns';
 import {Switch, Route, Link} from "react-router-dom";
-import Inbox from "./Inbox";
-import OutBox from "./OutBox";
+import Box from "./Box";
+import SendMessage from "./SendMessage";
 import ServerPage from "./ServerPage";
 import {Divider} from "@material-ui/core";
 
@@ -109,14 +109,27 @@ export function Dashboard({logout, ...rest}) {
                             component={Link} to={'/dashboard/outbox'}
                         >
                             <ListItemIcon>
+                                <InboxIcon/>
+                            </ListItemIcon>
+                            <Typography variant="body2" color="textPrimary">
+                                <ListItemText primary="Skrzynka nadawcza"/>
+                            </Typography>
+                        </ListItem>
+                        <ListItem
+                            button
+                            selected={selectedIndex === 2}
+                            onClick={(event) => handleListItemClick(event, 2)}
+                            component={Link} to={'/dashboard/send'}
+                        >
+                            <ListItemIcon>
                                 <MailIcon/>
                             </ListItemIcon>
                             <ListItemText primary="Wyślij wiadomość"/>
                         </ListItem>
                         <ListItem
                             button
-                            selected={selectedIndex === 2}
-                            onClick={(event) => handleClick(event, 2)}
+                            selected={selectedIndex === 3}
+                            onClick={(event) => handleClick(event, 3)}
                         >
                             <ListItemIcon>
                                 <DnsIcon/>
@@ -130,7 +143,7 @@ export function Dashboard({logout, ...rest}) {
                         <Divider/>
                         <ListItem
                             button
-                            selected={selectedIndex === 3}
+                            selected={selectedIndex === 4}
                             onClick={logout}
                         >
                             <ListItemIcon>
@@ -146,10 +159,13 @@ export function Dashboard({logout, ...rest}) {
                 <Toolbar/>
                 <Switch>
                     <Route path="/dashboard/inbox">
-                        <Inbox/>
+                        <Box boxType="inbox"/>
                     </Route>
                     <Route path="/dashboard/outbox">
-                        <OutBox/>
+                        <Box boxType="outbox"/>
+                    </Route>
+                    <Route path="/dashboard/send">
+                        <SendMessage/>
                     </Route>
                     <Route path="/dashboard/server/:id">
                         <ServerPage/>
