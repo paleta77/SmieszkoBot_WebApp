@@ -117,7 +117,7 @@ function LoginGrid({
                 container
                 justify="flex-end">
                 <Grid item className={classes.registerText}>
-                    <Link to="#">
+                    <Link to="/register">
                         <Typography variant="body2" color="primary">
                             Nie masz konta? Zarejestruj się
                         </Typography>

@@ -9,6 +9,7 @@ import {
 import ProtectedRoute from "./ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
 import RootPage from "./pages/RootPage";
+import Register from "./pages/Register";
 
 export const jwtContext = React.createContext("test context");
 export let jwtVariable;
@@ -53,7 +54,7 @@ function App() {
         setIsAuthenticated(false);
     };
 
-    const codeRequest = () => {
+    const loginCodeRequest = () => {
         var myHeaders = new Headers();
         const username = document.getElementById("username").value;
         const password = document.getElementById("password").value;
@@ -66,7 +67,7 @@ function App() {
             redirect: 'follow'
         };
 
-        fetch("http://localhost:8500/code?userID=" + username.replace("#", "%23") + "&guildID=164834533001134080", requestOptions)
+        fetch("http://localhost:8500/code?userID=" + username.replace("#", "%23") + "&guildID=164834533001134080&codeType=login", requestOptions)
             .then(function (response) {
                 if (!response.ok) {
                     throw new Error("HTTP status " + response.status);
@@ -90,8 +91,15 @@ function App() {
                         ) : (
                             <RootPage
                                 login={login}
-                                codeRequest={codeRequest}
+                                codeRequest={loginCodeRequest}
                             />
+                        )}
+                    </Route>
+                    <Route path="/register" exact>
+                        {isAuthenticated ? (
+                            <Redirect to="/dashboard"/>
+                        ) : (
+                            <Register/>
                         )}
                     </Route>
                     <jwtContext.Provider value={[context, setContext]}>

@@ -16,7 +16,6 @@ function RootPage({
     const classes = useStyles();
     return (
         <Container maxWidth="xs">
-
             <div className={classes.paper}>
                 <LoginGrid
                     login={login}
