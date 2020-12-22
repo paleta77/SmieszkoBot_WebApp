@@ -66,8 +66,6 @@ function Box(boxType) {
         var myHeaders = new Headers();
         myHeaders.append("Authorization", credentials);
 
-
-
         var requestOptions = {
             method: 'GET',
             headers: myHeaders,

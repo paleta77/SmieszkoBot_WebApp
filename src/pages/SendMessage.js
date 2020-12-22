@@ -11,6 +11,8 @@ import Button from "@material-ui/core/Button";
 import SendIcon from '@material-ui/icons/Send';
 import {sendMessageEncryptedRSA, jwtDecode} from '../Crypter';
 
+export let toUserPublicKey = "";
+
 function SendMessage() {
     const [guildsList, setGuildsList] = React.useState([]);
     const [usersList, setUsersList] = React.useState([]);
@@ -30,6 +32,26 @@ function SendMessage() {
         console.log("event.target" ,event.target);
         console.log("event.target.value", event.target.value);
         console.log("selectedUser", selectedUserString);
+
+
+        const credentials = "Bearer " + jsonWebToken[0];
+
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", credentials);
+
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow',
+        };
+
+        fetch('http://localhost:8500/publicKey?username=' + event.target.value.replace("#", "%23"), requestOptions)
+            .then(response => response.json())
+            .then(data => {
+                toUserPublicKey = data;
+                console.log("toUserPublicKey ", toUserPublicKey.publicKey);
+            });
+
     }
 
     const handleGuildChange = (event) => {
@@ -179,7 +201,8 @@ function SendMessage() {
                     selectedUser,
                     document.getElementById("topic").value,
                     document.getElementById("message").value,
-                    jsonWebToken
+                    jsonWebToken,
+                    toUserPublicKey
                 )}}
             >
                 Wyślij

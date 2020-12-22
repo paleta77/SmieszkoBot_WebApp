@@ -38,35 +38,35 @@ export function decryptString(message, privateKey){
     //     "NNEUnXODGzI27fj4c8hDDmsveUsFN9D1BVgjv7lsCze2nSxaCYOxu5vrAztGGxsZ" +
     //     "hV0gvSeNKQ9qCw==" +
     //     "-----END PRIVATE KEY-----", 'pkcs8-private-pem');
-    const userPrivateKey = new NodeRSA("-----BEGIN PRIVATE KEY-----\n" +
-        "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBANZVkrUS0NpAQskZ\n" +
-        "S1qK5F9oh9BTsBuDoJZ3YWaz3h6U6R2kXq/rhUOG2qwPmHdNmpXQwMkyTfcwqZy4\n" +
-        "VmitE2RJVVqQ+jFKdviLOBJdK4VKFikUH7VpOJPu0JNmeGhfDhF3KItIQvMqaceb\n" +
-        "9CzxEcriEripRjlaEUwLGWBzliyVAgMBAAECgYAom+QE/MCnaV99/JXjXMdyMDrz\n" +
-        "RLfsLp9BgvLoY5HlF2+nlxn9mNER/z31Nas8h26PjhLIzAgrmoO4VtDAWnJ+x9dW\n" +
-        "0jK0aSDVQVOTkXwyj6ABVxS5h9Q96jxUS+Y90Q6wlrkcNjmbn2p1bpYZsZiAJlOx\n" +
-        "z0H0HZkxYKWloeq7oQJBAPnh5vwiiRW3m8TDl2ZTUB7/wFG+btNoi9Y1WmHjCvuM\n" +
-        "C219wZSQPtoF98pF93U533NGyxUC6hNQxh5N3AzAmx0CQQDblODhkVH9WEpm+0vf\n" +
-        "vOOsYpGZfs6f62qILhDfQXsCTzXRuBZOsxll7tBlOYLynQW+Vvx3LWgmS3C2p445\n" +
-        "baXZAkEAvqCDYh3Gjna/sl+0BC/Sk5Nv1+x7B3ReGVAiX0KhgjzYCvNA1mEkUZbz\n" +
-        "7a9qlFdOC9cZ3jGW+J1KRpwHHwNgUQJAeOfzI4EW+j7BSQ8Z6iph2quzrCcsstW3\n" +
-        "pSBoXeX6S30+Dyoj7lWjqILk8LfIKLrZTMMs5Jp1/JARkiGUqH59kQJAIJYzaJl7\n" +
-        "LZQhThS3/fiPEk6CvLSQMgsl++sxy/AiaRnv5vd5Pb6pZMOkBSNz59O7srHqXFmv\n" +
-        "cAtBnLujR54kqA==\n" +
-        "-----END PRIVATE KEY-----", 'pkcs8-private-pem');
-    console.log(privateKey);
+    // const userPrivateKey = new NodeRSA("-----BEGIN PRIVATE KEY-----\n" +
+    //     "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBANZVkrUS0NpAQskZ\n" +
+    //     "S1qK5F9oh9BTsBuDoJZ3YWaz3h6U6R2kXq/rhUOG2qwPmHdNmpXQwMkyTfcwqZy4\n" +
+    //     "VmitE2RJVVqQ+jFKdviLOBJdK4VKFikUH7VpOJPu0JNmeGhfDhF3KItIQvMqaceb\n" +
+    //     "9CzxEcriEripRjlaEUwLGWBzliyVAgMBAAECgYAom+QE/MCnaV99/JXjXMdyMDrz\n" +
+    //     "RLfsLp9BgvLoY5HlF2+nlxn9mNER/z31Nas8h26PjhLIzAgrmoO4VtDAWnJ+x9dW\n" +
+    //     "0jK0aSDVQVOTkXwyj6ABVxS5h9Q96jxUS+Y90Q6wlrkcNjmbn2p1bpYZsZiAJlOx\n" +
+    //     "z0H0HZkxYKWloeq7oQJBAPnh5vwiiRW3m8TDl2ZTUB7/wFG+btNoi9Y1WmHjCvuM\n" +
+    //     "C219wZSQPtoF98pF93U533NGyxUC6hNQxh5N3AzAmx0CQQDblODhkVH9WEpm+0vf\n" +
+    //     "vOOsYpGZfs6f62qILhDfQXsCTzXRuBZOsxll7tBlOYLynQW+Vvx3LWgmS3C2p445\n" +
+    //     "baXZAkEAvqCDYh3Gjna/sl+0BC/Sk5Nv1+x7B3ReGVAiX0KhgjzYCvNA1mEkUZbz\n" +
+    //     "7a9qlFdOC9cZ3jGW+J1KRpwHHwNgUQJAeOfzI4EW+j7BSQ8Z6iph2quzrCcsstW3\n" +
+    //     "pSBoXeX6S30+Dyoj7lWjqILk8LfIKLrZTMMs5Jp1/JARkiGUqH59kQJAIJYzaJl7\n" +
+    //     "LZQhThS3/fiPEk6CvLSQMgsl++sxy/AiaRnv5vd5Pb6pZMOkBSNz59O7srHqXFmv\n" +
+    //     "cAtBnLujR54kqA==\n" +
+    //     "-----END PRIVATE KEY-----", 'pkcs8-private-pem');
+    //console.log(privateKey);
     //privateKey = privateKey.replace(" ", "");
 
     console.log(privateKey);
 
-    //const userPrivateKey = new NodeRSA(privateKey, 'pkcs8-private-pem');
+    const userPrivateKey = new NodeRSA(privateKey, 'pkcs8-private-pem');
 
-    const userPublicKey = new NodeRSA("-----BEGIN PUBLIC KEY-----" +
-        "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC4b8zJKqz3B4vZ2JSDpynSoctF" +
-        "ntZlEFwuG5I64Xo/fwRryPK+MK7VkTsN6DtWueBp1nZakMc0DclzmIDKSZR9BMNU" +
-        "e2ZNdbIDbRIHpNAzmcoIHc/pVbFbDOUGHv9mAsWfy6AjSHgowPpN1hg9Px0Jz2Dh" +
-        "3DDjpHHxP4NyWaJM3QIDAQAB" +
-        "-----END PUBLIC KEY-----", 'pkcs8-public-pem');
+    // const toUserPublicKey = new NodeRSA("-----BEGIN PUBLIC KEY-----" +
+    //     "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC4b8zJKqz3B4vZ2JSDpynSoctF" +
+    //     "ntZlEFwuG5I64Xo/fwRryPK+MK7VkTsN6DtWueBp1nZakMc0DclzmIDKSZR9BMNU" +
+    //     "e2ZNdbIDbRIHpNAzmcoIHc/pVbFbDOUGHv9mAsWfy6AjSHgowPpN1hg9Px0Jz2Dh" +
+    //     "3DDjpHHxP4NyWaJM3QIDAQAB" +
+    //     "-----END PUBLIC KEY-----", 'pkcs8-public-pem');
 
     let messageInParts = message.split("!part!");
     console.log("messageInParts", messageInParts);
@@ -80,7 +80,7 @@ export function decryptString(message, privateKey){
     return decryptedMessage;
 }
 
-export function sendMessageEncryptedRSA(to, topic, message, jsonWebToken){
+export function sendMessageEncryptedRSA(to, topic, message, jsonWebToken, toUserPublicKey){
 
     //'pkcs8-public-pem'
     console.log("to in encrypt", to);
@@ -108,12 +108,11 @@ export function sendMessageEncryptedRSA(to, topic, message, jsonWebToken){
         "Hf0rv2rO2yprjLdoQA==\n" +
         "-----END PRIVATE KEY-----", 'pkcs8-private-pem');
 
-    const decodedJWT = jwtDecode(jsonWebToken[0]);
-
-    decodedJWT.publicKey = decodedJWT.publicKey.replace("\\\\n", "\n")
-    console.log(decodedJWT.publicKey);
-    console.log(decodedJWT);
-    const userPublicKey = new NodeRSA(decodedJWT.publicKey, 'pkcs8-public-pem');
+     const decodedJWT = jwtDecode(jsonWebToken[0]);
+     decodedJWT.publicKey = decodedJWT.publicKey.replace("\\\\n", "\n");
+    // console.log(decodedJWT.publicKey);
+    // console.log(decodedJWT);
+    const userPublicKey = new NodeRSA(toUserPublicKey.publicKey, 'pkcs8-public-pem');
 
     const jsonToEncrypt = {
         from_user: decodedJWT.username,
@@ -123,11 +122,11 @@ export function sendMessageEncryptedRSA(to, topic, message, jsonWebToken){
             parts: []
         }
     };
-
+    console.log("toUserPublicKey ", toUserPublicKey);
+    console.log("UserPublicKey ", userPublicKey.exportKey('pkcs8-public-pem'));
     const messageToEncryptInBlocks = message.match(new RegExp('.{1,' + userPublicKey.getMaxMessageSize() + '}', 'g'));
 
     for(let i = 0; i<messageToEncryptInBlocks.length; i++){
-
         jsonToEncrypt.message.parts.push(userPublicKey.encrypt(messageToEncryptInBlocks[i], "base64", "utf8"));
     }
     console.log(document.getElementById("to").value);
