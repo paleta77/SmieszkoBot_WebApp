@@ -54,20 +54,49 @@ function ServerPage() {
 
     const handleAliasDelete = (aliasName) => {
         console.log("Usuwam alias:" + aliasName);
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", credentials);
+
+        var requestOptions = {
+            method: 'DELETE',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+
+        fetch("http://localhost:8500/dashboardData?"
+             + "guildName=" + id
+             + "&aliasName=" + aliasName
+             + "&contentType=alias"
+        //fetch("http://localhost:8500/dashboardData/smieszki/alias/chillradio"
+            , requestOptions)
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error("HTTP status " + response.status);
+                }
+                return response.text();
+            })
+            .then(function (result) {
+                console.log(result);
+                let filtered = aliasesList.filter(function(alias){
+                    return alias.alias_name !== aliasName;
+                });
+                console.log("filtered", filtered);
+                setAliasesList(filtered);
+            })
+            .catch(error => console.log('error', error));
         handleAliasDialogClose();
     }
 
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", credentials);
-
-    var requestOptions = {
-        method: 'GET',
-        headers: myHeaders,
-        redirect: 'follow'
-    };
-
-
     React.useEffect(function effectFunction() {
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", credentials);
+
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+
         fetch("http://localhost:8500/dashboardData?guildName=" + id, requestOptions)
             .then(function (response) {
                 if (!response.ok) {
@@ -175,7 +204,7 @@ function ServerPage() {
                 </Paper>
             </Container>
             <Dialog open={aliasDialogOpen} onClose={handleAliasDialogClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+                <DialogTitle id="form-dialog-title">Usuwanie</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
                         Czy na pewno chcesz usunąć {aliasToDelete}?
@@ -183,10 +212,10 @@ function ServerPage() {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleAliasDialogClose} color="primary">
-                        Cancel
+                        Anuluj
                     </Button>
                     <Button onClick={() => handleAliasDelete(aliasToDelete)} color="primary">
-                        Subscribe
+                        Usuń
                     </Button>
                 </DialogActions>
             </Dialog>
