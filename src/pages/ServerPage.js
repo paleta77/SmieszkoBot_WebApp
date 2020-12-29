@@ -34,10 +34,10 @@ function ServerPage() {
     const [aliasesList, setAliasesList] = React.useState([]);
     const [rolesAllowedToUseList, setRolesAllowedToUseList] = React.useState([]);
 
-    const [aliasDialogOpen, setAliasDialogOpen] = React.useState(false);
+    const [dialogOpen, setDialogOpen] = React.useState(false);
 
-    const handleAliasDialogClose = () => {
-        setAliasDialogOpen(false);
+    const handleDialogClose = () => {
+        setDialogOpen(false);
         setElementNameToDelete("");
     };
 
@@ -47,15 +47,15 @@ function ServerPage() {
 
     const [elementNameToDelete, setElementNameToDelete] = React.useState("");
     const [elementTypeToDelete, setElementTypeToDelete] = React.useState("");
-    const handleAliasDialogOpen = (aliasName, elementType) => {
-        setElementNameToDelete(aliasName);
+    const handleDialogOpen = (elementName, elementType) => {
+        setElementNameToDelete(elementName);
         setElementTypeToDelete(elementType);
-        console.log("Alias do usuniecia:" + aliasName);
-        setAliasDialogOpen(true);
+        console.log("Element do usuniecia:" + elementName);
+        setDialogOpen(true);
     }
 
-    const handleAliasDelete = (aliasName) => {
-        console.log("Usuwam alias:" + aliasName);
+    const handleElementDelete = () => {
+        console.log("Usuwam element:" + elementNameToDelete);
         var myHeaders = new Headers();
         myHeaders.append("Authorization", credentials);
 
@@ -66,10 +66,9 @@ function ServerPage() {
         };
 
         fetch("http://localhost:8500/dashboardData?"
-             + "guildName=" + id
-             + "&elementName=" + aliasName
-             + "&elementType=" + elementTypeToDelete
-        //fetch("http://localhost:8500/dashboardData/smieszki/alias/chillradio"
+            + "guildName=" + id
+            + "&elementType=" + elementTypeToDelete
+            + "&elementName=" + elementNameToDelete
             , requestOptions)
             .then(function (response) {
                 if (!response.ok) {
@@ -79,14 +78,41 @@ function ServerPage() {
             })
             .then(function (result) {
                 console.log(result);
-                let filtered = aliasesList.filter(function(alias){
-                    return alias.alias_name !== aliasName;
-                });
-                console.log("filtered", filtered);
-                setAliasesList(filtered);
+                switch (elementTypeToDelete){
+                    case "alias": {
+                        let filtered = aliasesList.filter(function (alias) {
+                            return alias.alias_name !== elementNameToDelete;
+                        });
+                        setAliasesList(filtered);
+                        break;
+                    }
+                    case "dynamicCategory": {
+                        let filtered = dynamicCategoriesList.filter(function (category) {
+                            return category.category_name !== elementNameToDelete;
+                        });
+                        setDynamicCategoriesList(filtered);
+                        break;
+                    }
+                    case "allowedRole": {
+                        let filtered = rolesAllowedToUseList.filter(function (role) {
+                            return role.role_name !== elementNameToDelete;
+                        });
+                        setRolesAllowedToUseList(filtered);
+                        break;
+                    }
+                    case "user": {
+                        let filtered = usersList.filter(function (user) {
+                            return user !== elementNameToDelete;
+                        });
+                        setUsersList(filtered);
+                        break;
+                    }
+                    default:
+                        break;
+                }
             })
             .catch(error => console.log('error', error));
-        handleAliasDialogClose();
+        handleDialogClose();
     }
 
     React.useEffect(function effectFunction() {
@@ -137,7 +163,10 @@ function ServerPage() {
                                     </ListSubheader>
                                 }>
                                 {usersList.map((user) => (
-                                    <ListItem button key={user}>
+                                    <ListItem button
+                                              key={user}
+                                              onClick={() => handleDialogOpen(user, "user")}
+                                    >
                                         <ListItemIcon><KeyboardArrowRightIcon/></ListItemIcon>
                                         <ListItemText primary={user}/>
                                     </ListItem>
@@ -155,7 +184,10 @@ function ServerPage() {
                                     </ListSubheader>
                                 }>
                                 {dynamicCategoriesList.map((category, index) => (
-                                    <ListItem button key={category.category_name}>
+                                    <ListItem button
+                                              key={category.category_name}
+                                              onClick={() => handleDialogOpen(category.category_name, "dynamicCategory")}
+                                    >
                                         <ListItemIcon><KeyboardArrowRightIcon/></ListItemIcon>
                                         <ListItemText primary={category.category_name}/>
                                     </ListItem>
@@ -175,7 +207,7 @@ function ServerPage() {
                                 {aliasesList.map((alias, index) => (
                                     <ListItem button
                                               key={alias.alias_name}
-                                              onClick={() => handleAliasDialogOpen(alias.alias_name, "alias")}
+                                              onClick={() => handleDialogOpen(alias.alias_name, "alias")}
                                     >
                                         <ListItemIcon><KeyboardArrowRightIcon/></ListItemIcon>
                                         <ListItemText primary={alias.alias_name}/>
@@ -193,7 +225,11 @@ function ServerPage() {
                                     </ListSubheader>
                                 }>
                                 {rolesAllowedToUseList.map((role, index) => (
-                                    <ListItem button key={role.role_name}>
+                                    <ListItem
+                                        button
+                                        key={role.role_name}
+                                        onClick={() => handleDialogOpen(role.role_name, "allowedRole")}
+                                            >
                                         <ListItemIcon><KeyboardArrowRightIcon/></ListItemIcon>
                                         <ListItemText primary={role.role_name}/>
                                     </ListItem>
@@ -205,7 +241,7 @@ function ServerPage() {
                     </Grid>
                 </Paper>
             </Container>
-            <Dialog open={aliasDialogOpen} onClose={handleAliasDialogClose} aria-labelledby="form-dialog-title">
+            <Dialog open={dialogOpen} onClose={handleDialogClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Usuwanie</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
@@ -213,10 +249,10 @@ function ServerPage() {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleAliasDialogClose} color="primary">
+                    <Button onClick={handleDialogClose} color="primary">
                         Anuluj
                     </Button>
-                    <Button onClick={() => handleAliasDelete(elementNameToDelete)} color="primary">
+                    <Button onClick={() => handleElementDelete(elementNameToDelete)} color="primary">
                         Usuń
                     </Button>
                 </DialogActions>
