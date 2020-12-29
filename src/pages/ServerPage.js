@@ -34,25 +34,35 @@ function ServerPage() {
     const [aliasesList, setAliasesList] = React.useState([]);
     const [rolesAllowedToUseList, setRolesAllowedToUseList] = React.useState([]);
 
-    const [dialogOpen, setDialogOpen] = React.useState(false);
-
-    const handleDialogClose = () => {
-        setDialogOpen(false);
-        setElementNameToDelete("");
-    };
-
     const classes = useStyles();
+
     const credentials = "Bearer " + jsonWebToken[0];
 
+    const [addDialogOpen, setAddDialogOpen] = React.useState(false);
+    const [elementTypeToAdd, setElementTypeToAdd] = React.useState(false);
+    const handleAddDialogOpen = (elementType) => {
+        setElementTypeToAdd(elementType);
+        setAddDialogOpen(true);
+    }
+    const handleAddDialogClose = () => {
+        setAddDialogOpen(false);
+        //elementTypeToAdd = "";
+    };
 
-    const [elementNameToDelete, setElementNameToDelete] = React.useState("");
+
+    const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
     const [elementTypeToDelete, setElementTypeToDelete] = React.useState("");
-    const handleDialogOpen = (elementName, elementType) => {
+    const [elementNameToDelete, setElementNameToDelete] = React.useState("");
+
+    const handleDeleteDialogOpen = (elementName, elementType) => {
         setElementNameToDelete(elementName);
         setElementTypeToDelete(elementType);
-        console.log("Element do usuniecia:" + elementName);
-        setDialogOpen(true);
+        setDeleteDialogOpen(true);
     }
+    const handleDeleteDialogClose = () => {
+        setDeleteDialogOpen(false);
+        setElementNameToDelete("");
+    };
 
     const handleElementDelete = () => {
         console.log("Usuwam element:" + elementNameToDelete);
@@ -112,7 +122,7 @@ function ServerPage() {
                 }
             })
             .catch(error => console.log('error', error));
-        handleDialogClose();
+        handleDeleteDialogClose();
     }
 
     React.useEffect(function effectFunction() {
@@ -152,9 +162,7 @@ function ServerPage() {
                 </Typography>
                 <Paper>
                     <Grid container>
-
                         <Grid item xs={3}>
-
                             <List
                                 disablePadding
                                 subheader={
@@ -165,17 +173,15 @@ function ServerPage() {
                                 {usersList.map((user) => (
                                     <ListItem button
                                               key={user}
-                                              onClick={() => handleDialogOpen(user, "user")}
+                                              onClick={() => handleDeleteDialogOpen(user, "user")}
                                     >
                                         <ListItemIcon><KeyboardArrowRightIcon/></ListItemIcon>
                                         <ListItemText primary={user}/>
                                     </ListItem>
                                 ))}
                             </List>
-
                         </Grid>
                         <Grid item xs={3}>
-
                             <List
                                 disablePadding
                                 subheader={
@@ -186,14 +192,17 @@ function ServerPage() {
                                 {dynamicCategoriesList.map((category, index) => (
                                     <ListItem button
                                               key={category.category_name}
-                                              onClick={() => handleDialogOpen(category.category_name, "dynamicCategory")}
+                                              onClick={() => handleDeleteDialogOpen(category.category_name, "dynamicCategory")}
                                     >
                                         <ListItemIcon><KeyboardArrowRightIcon/></ListItemIcon>
                                         <ListItemText primary={category.category_name}/>
                                     </ListItem>
                                 ))}
                             </List>
-
+                            <Button
+                                onClick={() => handleAddDialogOpen("dynamicCategory")}
+                                >Dodaj
+                            </Button>
                         </Grid>
                         <Grid item xs={3}>
 
@@ -207,14 +216,17 @@ function ServerPage() {
                                 {aliasesList.map((alias, index) => (
                                     <ListItem button
                                               key={alias.alias_name}
-                                              onClick={() => handleDialogOpen(alias.alias_name, "alias")}
+                                              onClick={() => handleDeleteDialogOpen(alias.alias_name, "alias")}
                                     >
                                         <ListItemIcon><KeyboardArrowRightIcon/></ListItemIcon>
                                         <ListItemText primary={alias.alias_name}/>
                                     </ListItem>
                                 ))}
                             </List>
-
+                            <Button
+                                onClick={() => handleAddDialogOpen("alias")}
+                            >Dodaj
+                            </Button>
                         </Grid>
                         <Grid item xs={3}>
                             <List
@@ -228,20 +240,23 @@ function ServerPage() {
                                     <ListItem
                                         button
                                         key={role.role_name}
-                                        onClick={() => handleDialogOpen(role.role_name, "allowedRole")}
+                                        onClick={() => handleDeleteDialogOpen(role.role_name, "allowedRole")}
                                             >
                                         <ListItemIcon><KeyboardArrowRightIcon/></ListItemIcon>
                                         <ListItemText primary={role.role_name}/>
                                     </ListItem>
                                 ))}
                             </List>
-
+                            <Button
+                                onClick={() => handleAddDialogOpen("allowedRole")}
+                            >Dodaj
+                            </Button>
                         </Grid>
 
                     </Grid>
                 </Paper>
             </Container>
-            <Dialog open={dialogOpen} onClose={handleDialogClose} aria-labelledby="form-dialog-title">
+            <Dialog open={deleteDialogOpen} onClose={handleDeleteDialogClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Usuwanie</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
@@ -249,11 +264,35 @@ function ServerPage() {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleDialogClose} color="primary">
+                    <Button onClick={handleDeleteDialogClose} color="primary">
                         Anuluj
                     </Button>
                     <Button onClick={() => handleElementDelete(elementNameToDelete)} color="primary">
                         Usuń
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog open={addDialogOpen} onClose={handleAddDialogClose} aria-labelledby="form-dialog-title">
+                <DialogTitle id="form-dialog-title">Dodawanie</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        label={"Nazwa"}
+                        fullWidth
+                    />
+                    {elementTypeToAdd === "alias" ?
+                        <TextField
+                            label={"link"}
+                            fullWidth
+                        />
+                    :
+                        <div></div>}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleAddDialogClose} color="primary">
+                        Anuluj
+                    </Button>
+                    <Button onClick={() => handleElementDelete(elementNameToDelete)} color="primary"> //todo zmien na add
+                        Dodaj
                     </Button>
                 </DialogActions>
             </Dialog>
