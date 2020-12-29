@@ -38,16 +38,18 @@ function ServerPage() {
 
     const handleAliasDialogClose = () => {
         setAliasDialogOpen(false);
-        setAliasToDelete("");
+        setElementNameToDelete("");
     };
 
     const classes = useStyles();
     const credentials = "Bearer " + jsonWebToken[0];
 
 
-    const [aliasToDelete, setAliasToDelete] = React.useState("");
-    const handleAliasDialogOpen = (aliasName) => {
-        setAliasToDelete(aliasName);
+    const [elementNameToDelete, setElementNameToDelete] = React.useState("");
+    const [elementTypeToDelete, setElementTypeToDelete] = React.useState("");
+    const handleAliasDialogOpen = (aliasName, elementType) => {
+        setElementNameToDelete(aliasName);
+        setElementTypeToDelete(elementType);
         console.log("Alias do usuniecia:" + aliasName);
         setAliasDialogOpen(true);
     }
@@ -65,8 +67,8 @@ function ServerPage() {
 
         fetch("http://localhost:8500/dashboardData?"
              + "guildName=" + id
-             + "&aliasName=" + aliasName
-             + "&contentType=alias"
+             + "&elementName=" + aliasName
+             + "&elementType=" + elementTypeToDelete
         //fetch("http://localhost:8500/dashboardData/smieszki/alias/chillradio"
             , requestOptions)
             .then(function (response) {
@@ -173,7 +175,7 @@ function ServerPage() {
                                 {aliasesList.map((alias, index) => (
                                     <ListItem button
                                               key={alias.alias_name}
-                                              onClick={() => handleAliasDialogOpen(alias.alias_name)}
+                                              onClick={() => handleAliasDialogOpen(alias.alias_name, "alias")}
                                     >
                                         <ListItemIcon><KeyboardArrowRightIcon/></ListItemIcon>
                                         <ListItemText primary={alias.alias_name}/>
@@ -207,14 +209,14 @@ function ServerPage() {
                 <DialogTitle id="form-dialog-title">Usuwanie</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Czy na pewno chcesz usunąć {aliasToDelete}?
+                        Czy na pewno chcesz usunąć {elementNameToDelete}?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleAliasDialogClose} color="primary">
                         Anuluj
                     </Button>
-                    <Button onClick={() => handleAliasDelete(aliasToDelete)} color="primary">
+                    <Button onClick={() => handleAliasDelete(elementNameToDelete)} color="primary">
                         Usuń
                     </Button>
                 </DialogActions>
