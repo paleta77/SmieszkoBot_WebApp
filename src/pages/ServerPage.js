@@ -39,16 +39,72 @@ function ServerPage() {
     const credentials = "Bearer " + jsonWebToken[0];
 
     const [addDialogOpen, setAddDialogOpen] = React.useState(false);
-    const [elementTypeToAdd, setElementTypeToAdd] = React.useState(false);
+    const [elementTypeToAdd, setElementTypeToAdd] = React.useState("");
+    // const [elementNameToAdd, setElementNameToAdd] = React.useState("");
+    // const [elementLinkToAdd, setElementLinkToAdd] = React.useState("");
     const handleAddDialogOpen = (elementType) => {
         setElementTypeToAdd(elementType);
         setAddDialogOpen(true);
     }
     const handleAddDialogClose = () => {
         setAddDialogOpen(false);
-        //elementTypeToAdd = "";
+        setElementTypeToAdd("");
     };
 
+    const handleElementAdd = () => {
+        const elementName = document.getElementById("elementName").value;
+        console.log("elementName ", elementName);
+
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", credentials);
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+
+        let urlString = "http://localhost:8500/dashboardData?"
+            + "guildName=" + id
+            + "&elementType=" + elementTypeToAdd
+            + "&elementName=" + elementName;
+
+        if(elementTypeToAdd==="alias"){
+            const elementLink = document.getElementById("elementLink").value;
+            if (elementLink != null && elementLink !== "null") {
+                urlString += "&elementLink=" + elementLink;
+            }
+        }
+
+        fetch(urlString
+            , requestOptions)
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error("HTTP status " + response.status);
+                }
+                return response.json();
+            })
+            .then(function (result) {
+                switch (elementTypeToAdd){
+                    case "alias": {
+                        setAliasesList(result.aliases);
+                        break;
+                    }
+                    case "dynamicCategory": {
+                        setDynamicCategoriesList(result.dynamicCategories);
+                        break;
+                    }
+                    case "allowedRole": {
+                        setRolesAllowedToUseList(result.rolesAllowedToUse)
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            })
+            .catch(error => console.log('error', error));
+        handleAddDialogClose();
+    };
 
     const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
     const [elementTypeToDelete, setElementTypeToDelete] = React.useState("");
@@ -267,7 +323,7 @@ function ServerPage() {
                     <Button onClick={handleDeleteDialogClose} color="primary">
                         Anuluj
                     </Button>
-                    <Button onClick={() => handleElementDelete(elementNameToDelete)} color="primary">
+                    <Button onClick={() => handleElementDelete()} color="primary">
                         Usuń
                     </Button>
                 </DialogActions>
@@ -276,11 +332,13 @@ function ServerPage() {
                 <DialogTitle id="form-dialog-title">Dodawanie</DialogTitle>
                 <DialogContent>
                     <TextField
+                        id="elementName"
                         label={"Nazwa"}
                         fullWidth
                     />
                     {elementTypeToAdd === "alias" ?
                         <TextField
+                            id="elementLink"
                             label={"link"}
                             fullWidth
                         />
@@ -291,7 +349,7 @@ function ServerPage() {
                     <Button onClick={handleAddDialogClose} color="primary">
                         Anuluj
                     </Button>
-                    <Button onClick={() => handleElementDelete(elementNameToDelete)} color="primary"> //todo zmien na add
+                    <Button onClick={() => handleElementAdd()} color="primary">
                         Dodaj
                     </Button>
                 </DialogActions>
