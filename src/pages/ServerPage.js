@@ -113,9 +113,11 @@ function ServerPage() {
     const [elementNameToDelete, setElementNameToDelete] = React.useState("");
 
     const handleDeleteDialogOpen = (elementName, elementType) => {
-        setElementNameToDelete(elementName);
-        setElementTypeToDelete(elementType);
-        setDeleteDialogOpen(true);
+        if(isAdmin) {
+            setElementNameToDelete(elementName);
+            setElementTypeToDelete(elementType);
+            setDeleteDialogOpen(true);
+        }
     }
     const handleDeleteDialogClose = () => {
         setDeleteDialogOpen(false);
