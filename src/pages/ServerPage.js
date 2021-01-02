@@ -33,10 +33,12 @@ function ServerPage() {
     const [dynamicCategoriesList, setDynamicCategoriesList] = React.useState([]);
     const [aliasesList, setAliasesList] = React.useState([]);
     const [rolesAllowedToUseList, setRolesAllowedToUseList] = React.useState([]);
+    const [isAdmin, setIsAdmin] = React.useState(false);
 
     const classes = useStyles();
 
     const credentials = "Bearer " + jsonWebToken[0];
+    //const credentials = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXUyJ9.eyJpc3MiOiJhdXRoMCJ9.AbIJTDMFc7yUa5MhvcP03nJPyCPzZtQcGEp-zWfOkEE";
 
     const [addDialogOpen, setAddDialogOpen] = React.useState(false);
     const [elementTypeToAdd, setElementTypeToAdd] = React.useState("");
@@ -203,7 +205,8 @@ function ServerPage() {
                 setUsersList(result.guildUserNames);
                 setDynamicCategoriesList(result.dynamicCategories);
                 setAliasesList(result.aliases);
-                setRolesAllowedToUseList(result.rolesAllowedToUse)
+                setRolesAllowedToUseList(result.rolesAllowedToUse);
+                setIsAdmin(result.isAdmin);
             })
             .catch(error => console.log('error', error));
 
@@ -255,10 +258,12 @@ function ServerPage() {
                                     </ListItem>
                                 ))}
                             </List>
-                            <Button
+                            {isAdmin ? <Button
                                 onClick={() => handleAddDialogOpen("dynamicCategory")}
-                                >Dodaj
+                            >Dodaj
                             </Button>
+                            :
+                            <div/>}
                         </Grid>
                         <Grid item xs={3}>
 
@@ -279,10 +284,12 @@ function ServerPage() {
                                     </ListItem>
                                 ))}
                             </List>
-                            <Button
+                            {isAdmin ? <Button
                                 onClick={() => handleAddDialogOpen("alias")}
                             >Dodaj
                             </Button>
+                            :
+                            <div/>}
                         </Grid>
                         <Grid item xs={3}>
                             <List
@@ -303,10 +310,14 @@ function ServerPage() {
                                     </ListItem>
                                 ))}
                             </List>
-                            <Button
+                            {isAdmin ?
+                                <Button
                                 onClick={() => handleAddDialogOpen("allowedRole")}
-                            >Dodaj
-                            </Button>
+                                >
+                                    Dodaj
+                                </Button>
+                            :
+                            <div/>}
                         </Grid>
 
                     </Grid>
