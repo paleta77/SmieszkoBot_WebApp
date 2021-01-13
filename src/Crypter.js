@@ -84,7 +84,8 @@ export function sendMessageEncryptedRSA(to, topic, message, jsonWebToken, toUser
 //'{"msg":"test"}'
 
     var myHeaders = new Headers();
-    myHeaders.append("Authorization", "basic aos:dsad");
+    const credentials = "Bearer " + jsonWebToken[0];
+    myHeaders.append("Authorization", credentials);
 
     var requestOptions = {
         method: 'POST',
