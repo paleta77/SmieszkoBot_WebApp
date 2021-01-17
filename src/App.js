@@ -37,7 +37,7 @@ function App() {
             redirect: 'follow'
         };
 
-        const response = await fetch("http://localhost:8500/login?userID=" + username.replace("#", "%23"), requestOptions)
+        const response = await fetch("https://localhost:8500/login?userID=" + username.replace("#", "%23"), requestOptions)
         const jwt = await response.json();
 
         if (jwt.jwt !== "") {
@@ -67,7 +67,7 @@ function App() {
             redirect: 'follow'
         };
 
-        fetch("http://localhost:8500/code?userID=" + username.replace("#", "%23") + "&guildID=164834533001134080&codeType=login", requestOptions)
+        fetch("https://localhost:8500/code?userID=" + username.replace("#", "%23") + "&guildID=164834533001134080&codeType=login", requestOptions)
             .then(function (response) {
                 if (!response.ok) {
                     throw new Error("HTTP status " + response.status);

@@ -66,7 +66,7 @@ function ServerPage() {
             redirect: 'follow'
         };
 
-        let urlString = "http://localhost:8500/dashboardData?"
+        let urlString = "https://localhost:8500/dashboardData?"
             + "guildName=" + id
             + "&elementType=" + elementTypeToAdd
             + "&elementName=" + elementName;
@@ -135,7 +135,7 @@ function ServerPage() {
             redirect: 'follow'
         };
 
-        fetch("http://localhost:8500/dashboardData?"
+        fetch("https://localhost:8500/dashboardData?"
             + "guildName=" + id
             + "&elementType=" + elementTypeToDelete
             + "&elementName=" + elementNameToDelete
@@ -195,7 +195,7 @@ function ServerPage() {
             redirect: 'follow'
         };
 
-        fetch("http://localhost:8500/dashboardData?guildName=" + id, requestOptions)
+        fetch("https://localhost:8500/dashboardData?guildName=" + id, requestOptions)
             .then(function (response) {
                 if (!response.ok) {
                     throw new Error("HTTP status " + response.status);

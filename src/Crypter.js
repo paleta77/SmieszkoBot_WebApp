@@ -95,7 +95,7 @@ export function sendMessageEncryptedRSA(to, topic, message, jsonWebToken, toUser
         //mode: 'no-cors'
     };
 
-    fetch("http://localhost:8500/crypto", requestOptions)
+    fetch("https://localhost:8500/crypto", requestOptions)
         .then(function (response) {
             if (!response.ok) {
                 throw new Error("HTTP status " + response.status);

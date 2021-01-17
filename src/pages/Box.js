@@ -72,7 +72,7 @@ function Box(boxType) {
             redirect: 'follow',
         };
 
-        fetch("http://localhost:8500/crypto?BoxType=" + boxType.boxType, requestOptions)
+        fetch("https://localhost:8500/crypto?BoxType=" + boxType.boxType, requestOptions)
             .then(function (response) {
                 if (!response.ok) {
                     throw new Error("HTTP status " + response.status);

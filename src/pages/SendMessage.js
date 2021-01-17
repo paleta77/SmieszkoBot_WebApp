@@ -45,7 +45,7 @@ function SendMessage() {
             redirect: 'follow',
         };
 
-        fetch('http://localhost:8500/publicKey?username=' + event.target.value.replace("#", "%23"), requestOptions)
+        fetch('https://localhost:8500/publicKey?username=' + event.target.value.replace("#", "%23"), requestOptions)
             .then(response => response.json())
             .then(data => {
                 toUserPublicKey = data;
@@ -69,7 +69,7 @@ function SendMessage() {
             //mode: 'no-cors'
         };
 
-        fetch("http://localhost:8500/guild?guildName=" + event.target.value + "&content=registeredMembers", requestOptions)
+        fetch("https://localhost:8500/guild?guildName=" + event.target.value + "&content=registeredMembers", requestOptions)
             .then(function (response) {
                 if (!response.ok) {
                     throw new Error("HTTP status " + response.status);
@@ -99,7 +99,7 @@ function SendMessage() {
         const decodedJWT = jwtDecode(jsonWebToken[0]);
         let username = decodedJWT.username;
 
-        fetch("http://localhost:8500/user?userID=" + username.replace("#", "%23"), requestOptions)
+        fetch("https://localhost:8500/user?userID=" + username.replace("#", "%23"), requestOptions)
             .then(function (response) {
                 if (!response.ok) {
                     throw new Error("HTTP status " + response.status);

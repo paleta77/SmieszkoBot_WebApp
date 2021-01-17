@@ -32,7 +32,7 @@ async function getItems(jwt) {
     const decodedJWT = jwtDecode(jwtVariable);
     let username = decodedJWT.username;
 
-    const response = await fetch("http://localhost:8500/user?userID=" + username.replace("#", "%23"), requestOptions)
+    const response = await fetch("https://localhost:8500/user?userID=" + username.replace("#", "%23"), requestOptions)
     const serverList = await response.json();
 
     return serverList;

@@ -26,7 +26,7 @@ const loginCodeRequest = () => {
         redirect: 'follow'
     };
 
-    fetch("http://localhost:8500/code?userID=" + username.replace("#", "%23") + "&guildID=164834533001134080&codeType=register", requestOptions)
+    fetch("https://localhost:8500/code?userID=" + username.replace("#", "%23") + "&guildID=164834533001134080&codeType=register", requestOptions)
         .then(function (response) {
             if (!response.ok) {
                 throw new Error("HTTP status " + response.status);
@@ -65,7 +65,7 @@ const register = () => {
         body: JSON.stringify(body)
     };
 
-    fetch("http://localhost:8500/register", requestOptions)
+    fetch("https://localhost:8500/register", requestOptions)
         .then(function (response) {
             if (!response.ok) {
                 throw new Error("HTTP status " + response.status);
