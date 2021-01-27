@@ -103,15 +103,6 @@ function LoginGrid({
                             Wyślij kod
                         </Button>
                     </Grid>
-                    <Grid item xs>
-                        <Link to="/dashboard">
-                            <Button
-                                fullWidth
-                                variant={"contained"}>
-                                Przejdź dalej
-                            </Button>
-                        </Link>
-                    </Grid>
                 </Grid>
             <Grid
                 container
